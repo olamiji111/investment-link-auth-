@@ -2,6 +2,194 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+
+@font-face {
+  font-family: "icoplus";
+  src: url(/asset/fonts/icoplus.woff2) format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "pds";
+  src: url(/asset/fonts/pdsicons.woff2) format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.icon {
+  font-family: "icoplus";
+  /* or prisons if that is the real icon font */
+  font-style: normal;
+  font-weight: normal;
+  display: inline-block;
+  line-height: 1;
+}
+
+.icon-pds {
+  font-family: "pds";
+  /* or prisons if that is the real icon font */
+  font-style: normal;
+  font-weight: normal;
+  display: inline-block;
+  line-height: 1;
+}
+
+
+
+.icon-add-funds::before {
+  content: "\e913";
+}
+
+.icon-cancel::before {
+  content: "\e9c0";
+}
+
+.icoplus::before {
+  content: "\ea36";
+}
+
+/*  NavLinks icons with pds fonts*/
+.icon-trade::before {
+  content: "\e981";
+}
+
+.icon-open::before {
+  content: "\e98c";
+}
+
+.icon-orders::before {
+  content: "\e9ac";
+}
+
+.icon-closed::before {
+  content: "\e999";
+}
+
+.icon-funds::before {
+  content: "\e907";
+}
+
+.icon-bot::before {
+  content: "\e91c";
+}
+
+/* Account links icons with iconplus fonts */
+.icon-account::before {
+  content: "\e9bc";
+}
+
+.icon-me::before {
+  content: "\e9d6"
+}
+
+.icon-verify::before {
+  content: "\e9bd"
+}
+
+.icon-invite::before {
+  content: "\e9be"
+}
+
+/* Tool Links icons with icoplus fonts */
+.icon-tools::before {
+  content: "\e9ca"
+}
+
+.icon-snapshot::before {
+  content: "\e911"
+}
+
+.icon-watchlist::before {
+  content: "\e9e2"
+}
+
+.icon-calendar::before {
+  content: "\e91a"
+}
+
+.icon-news::before {
+  content: "\e934"
+}
+
+.icon-alerts::before {
+  content: "\e927"
+}
+
+.icon-reports::before {
+  content: "\e9a5"
+}
+
+/* Tool Links icons with icoplus fonts */
+.icon-help::before {
+  content: "\e9a7"
+}
+
+.icon-academy::before {
+  content: "\e907"
+}
+
+.icon-tour::before {
+  content: "\e917"
+}
+
+.icon-agreement::before {
+  content: "\e9c4"
+}
+
+.icon-contact::before {
+  content: "\e9c6"
+}
+
+/*  Font icons for nav Link settins*/
+
+.icon-settings::before {
+  content: "\e9b8"
+}
+
+.icon-privacy::before {
+  content: "\e9cb"
+}
+
+.icon-security::before {
+  content: "\e9b9"
+}
+
+.icon-notifications:before {
+  content: "\e905"
+}
+
+.icon-display:before {
+  content: "\e9e6"
+}
+
+/*  Other Links */
+.icon-professional:before {
+  content: "\e9f3"
+}
+
+.icon-insights:before {
+  content: "\e945"
+}
+
+.icon-logout:before {
+  content: "\ea3e"
+}
+
+.icon-info:before {
+  content: "\e96c"
+}
+
+
+/*  Fonts Loaded */
+.ibm {
+  font-family: var(--font-ibm);
+}
+
+.sans {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -43,8 +231,9 @@
 
 @theme inline {
   --font-ibm: var(--font-ibm);
-  --font-sans: var(--font-sans);
-  --font-default: var(--font-sans), var(--font-ibm);
+  --font-inter: var(--font-inter);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-default: var(--font-inter), var(--font-sans), var(--font-ibm);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -114,30 +303,34 @@
   --color-link-hover: rgba(13, 110, 253, 1);
   --color-text-color: #e8f5ff;
   --color-logo-color: #0c2780;
-  --color-footer-text-color: #0c2780;
+  --color-link-color: #0c2780;
   --color-testimonial-card: #f1f4ff;
   --color-trader-card: rgb(12, 39, 128);
   --color-card-text-color: rgb(212, 237, 255);
   --color-medium-blue: #2e86fe;
   --color-light-blue: #11afff;
-  --color-link-hover: #5596ff;
+  --color-link-hover: #3474Cb
 }
 
 @layer base {
 
   html,
   body {
-    @apply overflow-x-hidden bg-background text-foreground antialiased;
-    font-family: var(--font-default)
+    @apply overflow-auto bg-background text-foreground antialiased;
+    font-family: var(--font-default);
+
   }
+
   * {
     @apply border-border outline-ring/50;
 
   }
+
   body {
     @apply bg-background text-foreground;
 
   }
+
   html {
     @apply font-sans;
 
@@ -217,4 +410,48 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Edge */
+}
+
+
+[data-radix-dialog-content] {
+  position: fixed !important;
+  inset: 0 !important;
+  height: 100dvh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.sheet-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  /* IMPORTANT: real viewport lock */
+  width: 90%;
+  background: #F1F6FE;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* kills page scroll leakage */
+}
+
+.sheet-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px;
+  min-height: 0;
 }

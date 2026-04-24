@@ -20,8 +20,8 @@ const Trade = () => {
         <main className="h-screen relative ">
             <Header headerTitle="Popular Options" />
 
-            <div className="h-full">
-                <div className="flex flex-col w-full pb-62 overflow-x-hidden">
+            <div className=" h-full ">
+                <div className="flex flex-col w-full overflow-hidden pb-58 ">
 
                     {PopularOptions.map((trade, idx) => (
                         <div
@@ -112,7 +112,7 @@ const Trade = () => {
 
                 </div>
             </div>
-            <div className="fixed bottom-0 overflow-hidden left-0 w-full sm:h-[45vh] h-[32vh]  bg-white border-t shadow-2xl z-50">
+            <div className="fixed bottom-0  overflow-hidden overscroll-hidden pb-0 scrollbar-none left-0 w-full sm:h-[45vh] h-[32vh]  bg-white border-t shadow-2xl z-50">
 
                 <TradingViewChart symbol={TradeOption} />
 

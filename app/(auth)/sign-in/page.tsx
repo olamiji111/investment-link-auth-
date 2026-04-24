@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
 import Header from '@/sections/header';
 import { Eye, EyeOff, Mail, Lock, MessageSquareMore } from 'lucide-react';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ interface FormData {
 
 interface LoginStateProps {
     loginState: LoginState;
-    setLoginState: React.Dispatch<React.SetStateAction<LoginState>>;
+    setLoginState: Dispatch<SetStateAction<LoginState>>;
 }
 
 interface LoginState {

@@ -21,7 +21,7 @@ const Header = ({ headerTitle }: { headerTitle: string }) => {
 
     return (
         <>
-            <header className='fixed top-0 z-20 bg-white border-none transition-all backdrop-blur-none duration-300 w-full '>
+            <header className='fixed top-0 z-20 bg-white border-none transition-all backdrop-blur-none duration-300 w-full overflow-y-hidden'>
                 <div className='py-3 px-2 flex  flex-row justify-between items-center max-w-full w-full'>
                     <div className='flex flex-row gap-4 items-center'>
 
@@ -32,18 +32,18 @@ const Header = ({ headerTitle }: { headerTitle: string }) => {
                             </button>
                         </Sidebarsheet>
                         <button className='px-1 transition-all ease-in-out duration-300 cursor-pointer flex flex-row gap-3 items-center'>
-                            <span className=' capitalize text-sm font-semibold text-black'> {headerTitle} </span>
+                            <span className=' capitalize text-[16px] font-bold text-black'> {headerTitle} </span>
                             {headerTitle.replace(/\s/g, '').toLocaleLowerCase() === "popularoptions" && (
-                                <ChevronDown size={16} strokeWidth={2} className='text-black mt-1' />
+                                <ChevronDown size={22} strokeWidth={2} className='text-black mt-1' />
                             )}
                         </button>
 
                     </div>
-                    <div className='flex flex-row gap-1 items-center'>
+                    <div className='flex flex-row gap-3 items-center'>
                         <button className='transition-all duration-300 cursor-pointer px-2s'>
-                            <Search className='size-5 text-black' />
+                            <Search className='size-6 text-black mt-1' />
                         </button>
-                        <button title="notification" className='px-2 py-0.5 text-sm  cursor-pointer rounded-full bg-zinc-300 text-zinc-400 '>
+                        <button title="notification" className='px-2.5 py-1 text-sm  cursor-pointer rounded-full bg-zinc-300 text-zinc-500 font-semibold '>
                             <span> 0 </span>
                         </button>
                     </div>
@@ -64,7 +64,7 @@ const Header = ({ headerTitle }: { headerTitle: string }) => {
                 )}
 
             </header>
-            <div className={` ${showDiv ? "h-24" : "h-12"}`} />
+            <div className={` ${showDiv ? "pt-24" : "pt-12"}`} />
         </>
 
     )

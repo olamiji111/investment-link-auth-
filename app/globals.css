@@ -309,7 +309,8 @@
   --color-card-text-color: rgb(212, 237, 255);
   --color-medium-blue: #2e86fe;
   --color-light-blue: #11afff;
-  --color-link-hover: #3474Cb
+  --color-link-hover: #3474Cb;
+  --color-secondary-bg: #2e86fe;
 }
 
 @layer base {

@@ -64,7 +64,7 @@ function TradingViewChart({ symbol }: { symbol: string }) {
     }, [safeSymbol, safeInterval]);
 
     return (
-        <div className="w-full h-full flex flex-col">
+        <div className="w-full h-full flex flex-col overflow-hidden">
 
             {/* CHART */}
             <div ref={containerRef} className="w-full flex-1" />

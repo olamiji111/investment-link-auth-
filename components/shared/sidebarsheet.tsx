@@ -20,7 +20,8 @@ import {
 import Link from "next/link";
 import CollapsibleAction from "./collapsible";
 import { ChevronDown } from "lucide-react";
-import { AccountBalance } from "@/types"
+import { AccountBalance } from "@/types";
+import { useBalanceStore } from "@/store";
 
 interface SheetProps {
     open: boolean;
@@ -40,11 +41,13 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
     const [isToolCollapsed, setIsToolCollapsed] = useState(false);
     const [isHelpCollapsed, setIsHelpCollapsed] = useState(false);
     const [isSettingsCollapsed, setIsSettingsCollapsed] = useState(false);
-    const [Balance, setBalance] = useState<AccountBalance>(defaulTAccountBalance);
+    const currentBalance = useBalanceStore((state) =>
+        state.balances[state.currentUserId] ?? defaulTAccountBalance
+    );
 
 
 
-    const balanceItems = Object.entries(defaulTAccountBalance);
+    const balanceItems = Object.entries(currentBalance);
 
     // 🔹 Reusable Trigger UI
     const createTrigger = (icon: string, label: string) => (
@@ -85,12 +88,11 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
             <SheetContent
                 side="left"
                 showCloseButton={false}
-                className="  w-[90%] flex-1  sm:w-[55%] overflow-hidden sm:overflow-auto  left-0 top-0  bg-[#F1F6FE] border-none outline-none rounded-r-2xl flex flex-col"
+                className="  flex-1   overflow-hidden sm:overflow-auto left-0 top-0  bg-[#F1F6FE] border-none outline-none rounded-r-2xl flex flex-col"
             >
 
-
                 {/* 🔹 SCROLLABLE AREA */}
-                <div className="  px-4 py-6 pb-0  sm:pb-46 overflow-y-auto flex-1  sm:overflow-y-visible">
+                <div className="  px-4 py-6 pb-0 overflow-y-auto flex-1  sm:overflow-y-visible">
 
                     {/* USER */}
                     <div className="flex gap-x-3 items-center ">
@@ -106,7 +108,7 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                     </div>
 
                     {/* NAV LINKS */}
-                    <div className="pt-5 flex flex-col gap-3">
+                    <div className="pt-5 sm:pt-12 flex flex-col gap-3">
                         {navLinks.map((item, idx) => (
                             <Link
                                 href={item.href}
@@ -169,20 +171,20 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                     </div>
                 </div>
 
-                <div className="w-full sm:overflow-hidden  sm:fixed sm:bottom-0  sm:w-[50%] right-0 left-0  shrink-0   bg-[#2c3a4d]  bottom-0 rounded-rb-full flex flex-col items-center justify-center p-4 pb-2">
-                    <button onClick={() => { }} className="bg-[#2e86fe]  cursor-pointer hover:opacity-90 duration-300 py-2 px-6  flex  flex-row gap-x-4  items-center justify-center rounded-full border border-transparent w-full text-white ">
+                <div className="w-full sm:overflow-hidden  sm:sticky  right-0 left-0  shrink-0   bg-[#2c3a4d]  bottom-0 rounded-rb-full flex flex-col items-center justify-center p-4 pb-2">
+                    <button onClick={() => { }} className="bg-medium-blue cursor-pointer hover:opacity-90 duration-300 py-2 px-6  flex  flex-row gap-x-4  items-center justify-center rounded-full border border-transparent w-full text-white ">
                         <span className="icon icon-add-funds text-[1.5rem] md:text-3xl" />
                         <span className='text-md sm:text-lg lg:text-xl font-semibold'> Add Funds</span>
                     </button>
 
-                    <div className="flex flex-col gap-y-1.5 items-start w-full mt-2">
+                    <div className="flex flex-col gap-y-3 items-start w-full my-3 shrink-0">
                         {balanceItems.map(([Key, value], idx) => (
                             <div key={idx} className="w-full  text-[#d4d4d4] text-sm font-medium flex flex-row gap-x-3 justify-between items-center">
-                                <span className="capitalize "> {Key} </span>
+                                <span className="capitalize text-[17px]"> {Key} </span>
 
-                                <div className="w-full h-[1px] bg-[repeating-linear-gradient(to_right,_#d4d4d4_0,_#d4d4d4_4px,_transparent_4px,_transparent_8px)]" />
+                                <div className="w-full mt-1 h-[1px] bg-[repeating-linear-gradient(to_right,_#d4d4d4_0,_#d4d4d4_4px,_transparent_4px,_transparent_8px)]" />
                                 <div className="flex flex-row gap-x-1 items-center">
-                                    <span className=" text-white font-medium tracking-wide"> ${value.toFixed(2)} </span>
+                                    <span className=" text-white text-[15px] font-medium tracking-wide"> £{value.toFixed(2)} </span>
                                     <span className="icon-info icon-pds   text-xl" />
                                 </div>
 

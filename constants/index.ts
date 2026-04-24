@@ -1,5 +1,6 @@
 import { Facebook, Apple, Google } from "@/components/icons/icons";
 import { ComponentType, SVGProps } from "react";
+import { AccountBalance } from "@/types";
 
 export const tradingFeatures: string[] = [
     "Free and unlimited Demo trading",
@@ -367,6 +368,27 @@ export const HelpCollapsibeLinks: navLinksProps[] = [
     },
 
 ];
+
+
+
+type UserBalances = {
+    [userId: string]: AccountBalance;
+}
+
+export const Balances: UserBalances = {
+    "user-1": {
+        Available: 0,
+        Equity: 0,
+        "M.Margin": 0,
+        profit: 0,
+    },
+    "user-2": {
+        Available: 0,
+        Equity: 0,
+        "M.Margin": 0,
+        profit: 0,
+    }
+};
 
 
 

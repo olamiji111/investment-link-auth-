@@ -20,7 +20,7 @@ import {
 import Link from "next/link";
 import CollapsibleAction from "./collapsible";
 import { ChevronDown } from "lucide-react";
-import { AccountBalance } from "@/types";
+import type { AccountBalance } from "@/types/index";
 import { useBalanceStore } from "@/store";
 
 interface SheetProps {
@@ -34,6 +34,7 @@ const defaulTAccountBalance: AccountBalance = {
     Equity: 0.0,
     "M.Margin": 0.0,
     profit: 0.0,
+    "I.Margin": 0.0,
 }
 
 const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {

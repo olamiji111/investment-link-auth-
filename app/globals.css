@@ -180,6 +180,14 @@
   content: "\e96c"
 }
 
+.icon-cashflow:before {
+  content: "\ea2a"
+}
+
+.icon-payment-method:before {
+  content: "\e99e"
+}
+
 
 /*  Fonts Loaded */
 .ibm {
@@ -455,4 +463,16 @@
   -webkit-overflow-scrolling: touch;
   padding: 24px;
   min-height: 0;
+}
+
+/* Hide scrollbar but keep scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE & Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

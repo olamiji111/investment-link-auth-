@@ -5,7 +5,7 @@ import Content from "../sections/content";
 
 const SignIn = () => {
   return (
-    <main className="h-screen ">
+    <main className="h-dvh ">
       <Header />
       <div className="py-12">
         <Content />

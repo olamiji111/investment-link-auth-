@@ -381,12 +381,14 @@ export const Balances: UserBalances = {
         Equity: 0,
         "M.Margin": 0,
         profit: 0,
+        "I.Margin": 0,
     },
     "user-2": {
         Available: 0,
         Equity: 0,
         "M.Margin": 0,
         profit: 0,
+        "I.Margin": 0,
     }
 };
 

@@ -1,6 +1,7 @@
 import { Facebook, Apple, Google } from "@/components/icons/icons";
 import { ComponentType, SVGProps } from "react";
-import { AccountBalance } from "@/types";
+import type { AccountBalance, DepositMethod } from "@/types";
+
 
 export const tradingFeatures: string[] = [
     "Free and unlimited Demo trading",
@@ -392,7 +393,33 @@ export const Balances: UserBalances = {
     }
 };
 
+interface BankProps {
+    name: DepositMethod;
+    imgPath: string
+}
+export const depositMethods: BankProps[] = [
+    {
+        name: "Card",
+        imgPath: "/asset/images/Deposit/logo-card.png"
+    },
+    {
+        name: "Cryptocurrency",
+        imgPath: "/asset/images/Deposit/cryptocurrency.svg"
+    },
+    {
+        name: "Bank Transfer",
+        imgPath: "/asset/images/Deposit/logo-wire.svg"
+    },
+    {
+        name: "BRE Gift Card",
+        imgPath: "/asset/images/Deposit/1507915.png"
+    },
+    {
+        name: "PayPal",
+        imgPath: "/asset/images/Deposit/logo-paypal.svg"
+    },
 
+];
 
 
 

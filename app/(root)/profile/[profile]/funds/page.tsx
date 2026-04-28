@@ -62,7 +62,7 @@ const FundsManagement = () => {
                         </div>
                     </div>
                     <div className='flex gap-x-2 flex-row items-center py-10'>
-                        <Link href="/deposit" className="w-40 sm:w-62 h-14 transition-all cursor-pointer bg-[linear-gradient(90deg,#11afff_5%,#2e86fe_33%)] duration-300 border border-transparent ease-in-out rounded-3xl text-xl text-white  flex items-center justify-center font-semibold">
+                        <Link href="/profile/default/deposit" className="w-40 sm:w-62 h-14 transition-all cursor-pointer bg-[linear-gradient(90deg,#11afff_5%,#2e86fe_33%)] duration-300 border border-transparent ease-in-out rounded-3xl text-xl text-white  flex items-center justify-center font-semibold">
                             Deposit
                         </Link>
                         <button className="w-40 sm:w-62 h-14  transition-all   bg-text-color cursor-pointer  text-link-color duration-300 border border-transparent ease-in-out rounded-3xl text-xl  flex items-center justify-center font-semibold">

@@ -188,6 +188,21 @@
   content: "\e99e"
 }
 
+.icon-info-2:before {
+  content: "\e95e"
+}
+
+.icon-livechat:before {
+  content: "\e93e"
+}
+
+.icon-padlock:before {
+  content: "\e9ab"
+}
+
+
+
+
 
 /*  Fonts Loaded */
 .ibm {
@@ -463,6 +478,16 @@
   -webkit-overflow-scrolling: touch;
   padding: 24px;
   min-height: 0;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
 }
 
 /* Hide scrollbar but keep scroll */

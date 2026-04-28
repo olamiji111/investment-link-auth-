@@ -64,7 +64,7 @@ const Header = ({ headerTitle }: { headerTitle: string }) => {
                 )}
 
             </header>
-            <div className={` ${showDiv ? "pt-24" : "pt-12"}`} />
+            <div className={` ${showDiv && isTrue ? "pt-24" : "pt-12"}`} />
         </>
 
     )

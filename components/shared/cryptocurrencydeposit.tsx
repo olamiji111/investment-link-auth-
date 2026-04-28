@@ -4,7 +4,7 @@ import type { DepositMethod } from '@/types';
 import AmountInput from './amountinput';
 import { ChevronLeft } from 'lucide-react';
 import Image from "next/image";
-import { Popover, PopoverContent, PopoverTrigger, PopoverDescription } from '../ui/popover';
+import { Popover, PopoverContent, PopoverTrigger, PopoverDescription, PopoverTitle } from '../ui/popover';
 import CryptoQRCode from './qrcode';
 
 interface cryptoInfoProps {
@@ -72,7 +72,7 @@ const CryptocurrencyDeposit = () => {
     return (
         <div className='flex flex-col gap-y-3 px-3 w-full relative'>
             <p className='text-[16px] font-bold text-zinc-400'>
-                {" Account Nmae: "}
+                {" Account Name: "}
                 <span className='text-zinc-500'> Olamiji odubote </span>
             </p>
             <div className='flex flex-col'>
@@ -104,10 +104,11 @@ const CryptocurrencyDeposit = () => {
                             </PopoverTrigger>
                             <PopoverContent
                                 align="center"
-                                side="top"
                                 sideOffset={6}
                                 className='w-52 z-9999  shadow-xl rounded-sm outline-none ring-0 ring-offset-0'
                             >
+                                <PopoverTitle />
+
                                 <div className='flex-col p-1 flex gap-4'>
                                     {Object.entries(CryptocurrencyMethods).map(([Key, coin]) => (
                                         <div key={Key} onClick={() => handlePopoverItem(Key as CryptoType)} className='flex items-center p-1 flex-row gap-x-1.5 rounded hover:font-semibold hover:bg-light-blue text-zinc-400 hover:text-white cursor-pointer ' >
@@ -178,7 +179,7 @@ const CryptocurrencyDeposit = () => {
                 <div className="pb-6  flex flex-col gap-3 items-start text-[12px] text-zinc-500 font-normal">
 
                     <p>
-                        Minimum of £100.00 per deposit. Cryptocurrency deposits are final and cannot be reversed once confirmed on the blockchain.
+                        Minimum of £200.00 per deposit. Cryptocurrency deposits are final and cannot be reversed once confirmed on the blockchain.
                     </p>
 
                     <p>

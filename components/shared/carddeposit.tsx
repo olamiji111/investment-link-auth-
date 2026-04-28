@@ -1,7 +1,5 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
-import type { DepositMethod } from '@/types';
+import React, { ChangeEvent, useRef, useState, SyntheticEvent } from 'react';
 import AmountInput from './amountinput';
-import { ChevronLeft } from 'lucide-react';
 import Image from "next/image";
 
 const months = Array.from({ length: 12 }, (_, i) =>
@@ -54,8 +52,23 @@ const CardDeposit = () => {
     };
 
 
-    const handleDeposit = () => {
-        //blocks for Handling Card Payment
+    const handleDeposit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!formValue.cardNumber
+            || !formValue.cvv || !formValue.validThr.month
+            || !formValue.validThr.year
+        ) {
+            console.log(" Input All Fields")
+            return;
+        }
+        //block for handle card Desposit
+        try {
+            console.log("Processing your Deposit", formValue)
+        } catch {
+            console.log("Deposit Failed", formValue)
+        }
+
     }
 
     return (
@@ -156,7 +169,7 @@ const CardDeposit = () => {
                     </div>
                 </form>
                 <div className='pb-28   flex flex-col gap-3 items-start text-[12px] text-zinc-500 font-normal'>
-                    <p> Minimum of  £100.00 per deposit.</p>
+                    <p> Minimum of  £200.00 per deposit.</p>
                     <p> I declare that: (a) this Payment Method (Card) is registered in the name of “Logged In User Name” and I am authorised to use it for payment (this may be verified); and (b) all funds deposited into my account are subject to risk of possible loss.
                         The beneficiary name that will appear on your card statement is “TradeBot”.
                     </p>
@@ -170,7 +183,7 @@ const CardDeposit = () => {
                 </div>
             </div>
             <div className='fixed bottom-0 z-50 left-0 bg-white   pb-4 shadow-none w-full flex flex-col items-center justify-center gap-2.5'>
-                <button className=" sm:w-72 w-52 mt-2  py-2.5 cursor-pointer bg-[linear-gradient(90deg,#11afff_2%,#2e86fe_33%)] duration-300 border-none ease-in-out rounded-sm  overflow-hidden text-white  flex items-center justify-center font-normal text-[15px]">
+                <button className=" sm:w-72 w-52 mt-2  py-2 cursor-pointer bg-[linear-gradient(90deg,#11afff_2%,#2e86fe_33%)] duration-300 border-none ease-in-out rounded-sm  overflow-hidden text-white  flex items-center justify-center font-normal text-[15px]">
                     Deposit
                 </button>
                 <div className=' text-zinc-500  font-normal   flex flex-row gap-x-2 items-center justify-center'>

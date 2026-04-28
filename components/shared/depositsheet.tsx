@@ -1,13 +1,16 @@
 "use client";
 import React, { ChangeEvent, useRef, useState } from 'react';
 import type { DepositMethod } from '@/types';
-import { Sheet, SheetContent, SheetTrigger, } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger, } from "@/components/ui/sheet";
 import Header from "@/components/shared/header";
 import { ChevronLeft } from 'lucide-react';
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectGroup, SelectTrigger, SelectValue } from "@/components/ui/select"
 import CardDeposit from './carddeposit';
 import CryptocurrencyDeposit from './cryptocurrencydeposit';
+import Giftcarddeposit from './giftcarddeposit';
+import Banktransfer from './banktransfer';
+import Paypal from './paypal';
 
 interface DepositsheetProps {
     open: boolean;
@@ -47,11 +50,20 @@ const BankImageSource: DepsositImageSourceProp = {
 
 };
 
+type DepositMethodComponent = Record<DepositMethod, React.ReactNode>
 
 
 
 
 const Depositsheet = ({ open, setOpen, selectedBank }: DepositsheetProps) => {
+    const DepositComponets: DepositMethodComponent = {
+        Card: <CardDeposit />,
+        Cryptocurrency: <CryptocurrencyDeposit />,
+        "Bank Transfer": <Banktransfer />,
+        "BRE Gift Card": <Giftcarddeposit />,
+        PayPal: <Paypal />
+
+    };
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -61,6 +73,7 @@ const Depositsheet = ({ open, setOpen, selectedBank }: DepositsheetProps) => {
                 showCloseButton={false}
                 className=' h-full w-full  no-scrollbar overflow-y-auto bg-white outline-none flex-1 flex flex-col'
             >
+                <SheetTitle />
 
                 <Header headerTitle='Deposit' />
                 <div className={` relative  bg-[linear-gradient(180deg,#ffffff_9.76%,#e7e9f2_100%)] h-[7.625rem] w-full   ${selectedBank ? `${BankImageSource[selectedBank].borderColor}` : ""}  `}>
@@ -95,7 +108,7 @@ const Depositsheet = ({ open, setOpen, selectedBank }: DepositsheetProps) => {
                     </div>
                 </div>
                 <div className='px-4 sm:px-6 py-3'>
-                    <CryptocurrencyDeposit />
+                    {selectedBank && DepositComponets[selectedBank]}
                 </div>
             </SheetContent>
 

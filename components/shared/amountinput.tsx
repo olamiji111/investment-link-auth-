@@ -4,7 +4,7 @@ import React, { ChangeEvent, useRef, useState } from 'react';
 import type { DepositMethod } from '@/types';
 
 const AmountInput = () => {
-    const [amount, setAmount] = useState("100");
+    const [amount, setAmount] = useState("200");
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.replace(/[^0-9]/g, "");

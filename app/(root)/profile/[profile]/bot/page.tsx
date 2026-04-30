@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from 'react'
-import Image from "next/image"
+import Image from "next/image";
+import { Checkbox } from '@/components/ui/checkbox';
+import { Loader2 } from 'lucide-react';
 
 const botConditions: string[] = [
     "The system trades on your behalf without controlling your funds.",
@@ -21,6 +23,16 @@ const aboutTradeBot: string[] = [
 ];
 const Bot = () => {
     const [isBotStarted, setIsBotTraded] = useState<boolean>(false);
+    const [botLoading, setBotLoading] = useState<boolean>(false);
+
+    const handleClick = () => {
+        setBotLoading(true);
+
+        setTimeout(() => {
+            setIsBotTraded((prev) => !prev);
+            setBotLoading(false);
+        }, 3000);
+    };
     return (
         <div className='h-dvh flex-col flex  overflow-y-auto no-scrollbar relative '>
 
@@ -39,7 +51,7 @@ const Bot = () => {
                     </div>
                     <div className='flex flex-col gap-y-4 pb-4 items-start w-full'>
                         {aboutTradeBot.map((about, idx) => (
-                            <div key={idx} className='flex flex-row gap-x-2 items-center'>
+                            <div key={idx} className='flex flex-row gap-x-2 items-start'>
                                 <span className='icon-pds icon-info text-zinc-500 text-xl cursor-pointer' />
                                 <span className='text-[13px] text-zinc-500 font-normal text-justify'> {about} </span>
                             </div>
@@ -53,22 +65,56 @@ const Bot = () => {
                                     alt="Bot Image"
                                     width={300}
                                     height={80}
-                                    className='object-contain  rounded-3xl bg-white '
+                                    className={`object-contain rounded-3xl bg-white transition-all duration-500
+                                                ${isBotStarted ? "animate-bounce scale-[0.8]" : ""}
+                                    `}
                                 />
-                                <span className='text-xs italic text-center font-semibold text-link-color hover:text-link-hover cursor-pointer '> Stock market Trade Bot </span>
+                                <span className="flex items-center justify-center gap-2 text-[11px] font-semibold cursor-pointer">
+
+                                    {/* blinking dot */}
+                                    {isBotStarted && (
+                                        <span className="w-2 h-2 rounded-full bg-green-500 animate-ping" />
+                                    )}
+
+                                    {/* text */}
+                                    <span className={!isBotStarted ? "text-link-color" : "text-green-600"}>
+                                        {!isBotStarted
+                                            ? "click start button below to activate bot"
+                                            : "Bot is Activated Successfully"}
+                                    </span>
+
+                                </span>
                             </div>
 
                             <div className='flex flex-col gap-y-4 pb-4 items-start w-full'>
-                                <p className='text-[13px] text-zinc-500 fomt-medium'> What you must know before you using Trade Bot? </p>
+                                <p className='text-[13px] text-zinc-500 font-semibold'> What you must know before you using Trade Bot? </p>
                                 {botConditions.map((condition, idx) => (
                                     <div key={idx} className="flex flex-col gap-y-4">
                                         <span className='text-xs sm:text-[13px] text-zinc-600'>{condition}
                                             {condition}
                                         </span>
                                     </div>
-
                                 ))}
+                                <div className='flex flex-row gap-x-2 items-center'>
+                                    <Checkbox defaultChecked className='size-4 rounded-[2px] data-checked:bg-medium-blue data-checked:border-transparent' />
+                                    <span className='text-xs text-link-color'> Agree to terms & agreements </span>
+                                </div>
                             </div>
+                            <button
+                                onClick={handleClick}
+                                disabled={botLoading}
+                                className={`sm:w-72 w-52 mt-2 py-2 cursor-pointer duration-300 rounded-sm text-white flex items-center justify-center text-[15px]
+                                            ${!isBotStarted
+                                        ? "bg-[linear-gradient(90deg,#11afff_2%,#2e86fe_33%)]"
+                                        : "bg-[linear-gradient(90deg,#ff4d4f_0%,#d93e3e_100%)]"
+                                    } ${botLoading ? "opacity-70 cursor-not-allowed" : ""}`}
+                            >
+                                {botLoading
+                                    ? "Processing..."
+                                    : !isBotStarted
+                                        ? "Start Bot"
+                                        : "Disable Bot"}
+                            </button>
                         </div>
                     </div>
 
@@ -78,5 +124,4 @@ const Bot = () => {
         </div>
     )
 }
-
 export default Bot

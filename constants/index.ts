@@ -246,7 +246,7 @@ export const navLinks: navLinksProps[] = [
     },
     {
         label: "Trade Bot",
-        href: "/profile/default/plus500-bot",
+        href: "/profile/default/bot",
         icon: "bot",
     }
 ]

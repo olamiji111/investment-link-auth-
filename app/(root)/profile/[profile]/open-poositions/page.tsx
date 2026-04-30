@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 import Header from '@/components/shared/header';
-import { OpenPositionIcon } from "@/components/icons/icons"
 import Image from "next/image";
 import Link from "next/link";
 import PageTemplate from "@/components/shared/pagetemplate"

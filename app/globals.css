@@ -204,10 +204,25 @@
   content: "\e9f4"
 }
 
+.icon-lasttrade:before {
+  content: "\e950"
+}
 
+.icon-bookmark:before {
+  content: "\e9ba"
+}
 
+.icon-basic:before {
+  content: "\e9d9"
+}
 
+.icon-frequent:before {
+  content: "\e9dc"
+}
 
+.icon-moderate:before {
+  content: "\e9d8"
+}
 
 
 /*  Fonts Loaded */
@@ -506,4 +521,8 @@
   /* IE & Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
 }

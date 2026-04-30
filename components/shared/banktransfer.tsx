@@ -40,13 +40,16 @@ function Banktransfer() {
                 </span>
                 <div className='flex flex-col items-start gap-3'>
                     {Object.entries(AccountDetails).map(([Key, value]) => (
-                        <div key={Key} className='flex flex-row gap-x-1 item-center'>
-                            <span className='text-zinc-500 font-normal text-[14px] cursor-default'> {Key}: </span>
-                            <span className='text-zinc-500 font-semibold text-[15px]'> {value} </span>
-                            {value === "XXXXX" && (
-                                <Loader2 className='w-4 h-4 ml-1 mt-0.5 animate-spin text-link-color' />
-                            )}
-                            <span className="icon icon-clipboard mt-1 text-link-color hover:text-link-hover cursor-pointer" />
+                        <div key={Key} className='flex flex-row gap-1  item-start'>
+                            <span className='text-zinc-500 mt-0.5 font-normal text-[13px] cursor-default flex shrink-0 '> {Key}: </span>
+                            <div className='flex flex-row items-start space-x-1'>
+                                <span onClick={() => alert('copied')} className='text-zinc-500 font-semibold text-[14px] text-justify'> {value} </span>
+                                {value === "XXXXX" && (
+                                    <Loader2 className='w-4 h-4 ml-1 mt-0.5 animate-spin text-link-color' />
+                                )}
+                                <span className="icon icon-clipboard mt-1 text-link-color hover:text-link-hover cursor-pointer" />
+                            </div>
+
                         </div>
                     ))}
                 </div>

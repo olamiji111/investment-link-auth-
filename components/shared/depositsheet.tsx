@@ -71,7 +71,7 @@ const Depositsheet = ({ open, setOpen, selectedBank }: DepositsheetProps) => {
             <SheetContent
                 side="top"
                 showCloseButton={false}
-                className=' h-full w-full  no-scrollbar overflow-y-auto bg-white outline-none flex-1 flex flex-col'
+                className=' h-full   no-scrollbar overflow-y-auto bg-white outline-none flex-1 flex flex-col'
             >
                 <SheetTitle />
 
@@ -80,7 +80,7 @@ const Depositsheet = ({ open, setOpen, selectedBank }: DepositsheetProps) => {
                     <div className='-pt-10 mt-2 px-4 sm:px-6 flex flex-row justify-between w-full items-center '>
                         <div className='flex flex-row gap-x-1 items-center'>
                             <button onClick={() => setOpen(false)} className='text-link-color cursor-pointer transition-all duration-300 outline-none ease-in-out'>
-                                <ChevronLeft strokeWidth={2} size={20} />
+                                <ChevronLeft strokeWidth={2} size={24} />
                             </button>
                             <span className='text-zinc-900 font-bold text-[15px]'> Deposit via {selectedBank ?? ""}</span>
                             <span className='icon icon-info-2 text-link-color text-sm font-bold' />

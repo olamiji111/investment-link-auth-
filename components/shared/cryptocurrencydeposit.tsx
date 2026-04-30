@@ -66,11 +66,16 @@ const CryptocurrencyDeposit = () => {
         setOpenPopover(false)
     }
 
-    const handleCopy = (text: string) => {
-        navigator.clipboard.writeText(text);
-    }
+    const handleCopy = async (text: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            alert("Copied");
+        } catch (error) {
+            console.error("Copy failed", error);
+        }
+    };
     return (
-        <div className='flex flex-col gap-y-3 px-3 w-full relative'>
+        <div className='flex flex-col gap-y-3 px-3 w-full relative h-dvh'>
             <p className='text-[16px] font-bold text-zinc-400'>
                 {" Account Name: "}
                 <span className='text-zinc-500'> Olamiji odubote </span>
@@ -104,6 +109,7 @@ const CryptocurrencyDeposit = () => {
                             </PopoverTrigger>
                             <PopoverContent
                                 align="center"
+                                side="top"
                                 sideOffset={6}
                                 className='w-52 z-9999  shadow-xl rounded-sm outline-none ring-0 ring-offset-0'
                             >

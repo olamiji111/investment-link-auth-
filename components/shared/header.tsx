@@ -11,6 +11,10 @@ const Header = ({ headerTitle }: { headerTitle: string }) => {
     const [showDiv, setShowDiv] = useState<boolean>(true)
     const addFundRef = useRef<HTMLDivElement | null>(null)
 
+    const handleNotClick = () => {
+        alert("Notifications sent to your registered Email")
+    }
+
     const handleDivCancel = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -22,7 +26,7 @@ const Header = ({ headerTitle }: { headerTitle: string }) => {
     return (
         <>
             <header className='fixed top-0 z-20 bg-white border-none transition-all backdrop-blur-none duration-300 w-full overflow-y-hidden'>
-                <div className='py-3 px-2 flex  flex-row justify-between items-center max-w-full w-full'>
+                <div className='py-3 px-4 flex  flex-row justify-between items-center max-w-full w-full'>
                     <div className='flex flex-row gap-4 items-center'>
 
                         {/* Opening the Left Sheet */}
@@ -43,13 +47,25 @@ const Header = ({ headerTitle }: { headerTitle: string }) => {
                         <button className='transition-all duration-300 cursor-pointer px-2s'>
                             <Search className='size-6 text-black mt-1' />
                         </button>
-                        <button title="notification" className='px-2.5 py-1 text-sm  cursor-pointer rounded-full bg-zinc-300 text-zinc-500 font-semibold '>
-                            <span> 0 </span>
-                        </button>
+                        <div className="relative inline-flex">
+
+                            {/* slow pulse ring */}
+                            <span className="absolute top-1/2 left-1/2 w-[80%] h-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#c71f5d] opacity-100 animate-[ping_3s_ease-in-out_infinite]"></span>
+
+                            {/* button */}
+                            <button
+                                onClick={handleNotClick}
+                                title="notification"
+                                className="relative size-9 border-2 border-white text-sm cursor-pointer rounded-full bg-[#c71f5d] text-white font-normal flex items-center justify-center"
+                            >
+                                <span>3</span>
+                            </button>
+
+                        </div>
                     </div>
                 </div>
                 {showDiv && isTrue && (
-                    <Link href="/" className='px-4  cursor-pointer text-sm text-white transition-all duration-300relative  py-3 bg-[linear-gradient(to_right,#11affd_0%,#2e86fe_100%)] flex items-center justify-between flex-row '>
+                    <Link href="/profile/default/deposit" className='px-4  cursor-pointer text-sm text-white transition-all duration-300relative  py-3 bg-[linear-gradient(to_right,#11affd_0%,#2e86fe_100%)] flex items-center justify-between flex-row '>
                         <div />
                         <div className='flex fles-row gap-3 items-center '>
                             <span className="icon icon-add-funds text-[1.5rem] md:text-3xl" />

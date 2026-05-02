@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Header from "@/components/shared/header";
 import { useBalanceStore } from '@/store';
 import Link from "next/link";
+import Alert from '@/components/shared/alert';
 
 const FundsManagement = () => {
     const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -34,6 +35,37 @@ const FundsManagement = () => {
             el.removeEventListener("wheel", handleWheel);
         };
     }, []);
+
+    const [isAlertOpen, setAlertOpen] = useState<boolean>(false);
+
+    const AlertContent = (
+        <div className="flex flex-col gap-6  justify-between h-full">
+
+            <p className="text-zinc-600 font-normal text-xs ">
+                No Available Funds to Withdraw
+            </p>
+
+            <div className="flex flex-row gap-x-2 items-center w-full mt-3">
+
+
+                <div className="ml-auto flex gap-x-3">
+
+                    <Link
+                        href="/profile/default/deposit"
+                        className="text-link-color rounded-full px-4 py-1 border border-[#8593bf] flex items-center justify-center transition-all duration-300"
+                    >
+                        Deposit
+                    </Link>
+
+                    <button onClick={() => setAlertOpen(false)} className="text-link-color cursor-pointer font-normal rounded-full border border-[#8593bf] flex items-center justify-center px-4 py-1">
+                        Ok
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    );
     return (
         <div ref={scrollRef} id="scroll-container" className='h-dvh  flex flex-col relative overflow-y-auto no-scrollbar'>
             <Header headerTitle="Fund Management" />
@@ -65,7 +97,7 @@ const FundsManagement = () => {
                         <Link href="/profile/default/deposit" className="w-40 h-14 transition-all cursor-pointer bg-[linear-gradient(90deg,#11afff_5%,#2e86fe_33%)] duration-300  ease-in-out rounded-3xl text-xl text-white  flex items-center justify-center font-semibold">
                             Deposit
                         </Link>
-                        <button className="w-40  h-14  transition-all   bg-text-color cursor-pointer  text-link-color duration-300 border border-transparent ease-in-out rounded-3xl text-xl  flex items-center justify-center font-semibold">
+                        <button onClick={() => setAlertOpen(true)} className="w-40  h-14  transition-all   bg-text-color cursor-pointer  text-link-color duration-300 border border-transparent ease-in-out rounded-3xl text-xl  flex items-center justify-center font-semibold">
                             Withdraw
                         </button>
                     </div>
@@ -106,7 +138,7 @@ const FundsManagement = () => {
                 </div>
 
             </div>
-
+            <Alert open={isAlertOpen} setOpen={setAlertOpen} contentChildren={AlertContent} header="Info" />
         </div>
     )
 }

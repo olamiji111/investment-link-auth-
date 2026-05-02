@@ -7,17 +7,24 @@ import { depositMethods } from '@/constants';
 import { ChevronRight } from 'lucide-react';
 import { DepositMethod } from '@/types';
 import Depositsheet from '@/components/shared/depositsheet';
+import Alert from '@/components/shared/alert';
 
 
 
 const Deposit = () => {
     const [isOpenDepositSheet, setOpenDepositSheet] = useState<boolean>(false);
     const [selectedBankType, setSelectedBankType] = useState<DepositMethod | null>(null);
+    const [isAlertOpen, setAlertOpen] = useState<boolean>(false);
 
     const handleDeposit = (item: DepositMethod) => {
         setSelectedBankType(item);
         setOpenDepositSheet(true);
     }
+    const AlertContent = (
+        <div>
+            <p> this is alert content </p>
+        </div>
+    );
     return (
         <main className='h-dvh  flex flex-col overflow-hidden!'>
             <Header headerTitle='Deposit' />
@@ -58,6 +65,7 @@ const Deposit = () => {
                     </button>
                 ))}
             </div>
+            <Alert open={isAlertOpen} setOpen={setAlertOpen} contentChildren={AlertContent} />
             <Depositsheet open={isOpenDepositSheet} setOpen={setOpenDepositSheet} selectedBank={selectedBankType} />
         </main>
     )

@@ -6,7 +6,7 @@ import {
     SheetTrigger,
     SheetContent,
     SheetTitle,
-    SheetDescription,
+
 } from "@/components/ui/sheet";
 import { User } from "@/components/icons/icons";
 import {
@@ -20,8 +20,11 @@ import {
 import Link from "next/link";
 import CollapsibleAction from "./collapsible";
 import { ChevronDown } from "lucide-react";
-import type { AccountBalance } from "@/types/index";
+import type { AccountBalance } from "@/types";
 import { useBalanceStore } from "@/store";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+
 
 interface SheetProps {
     open: boolean;
@@ -45,8 +48,18 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
     const currentBalance = useBalanceStore((state) =>
         state.balances[state.currentUserId] ?? defaulTAccountBalance
     );
+    const router = useRouter();
+    const pathname = usePathname()
 
+    const handleNavClick = (href: string) => {
+        if (pathname === href) {
+            router.refresh()
+        } else {
+            router.push(href);
+        }
 
+        setOpen(false);
+    }
 
     const balanceItems = Object.entries(currentBalance);
 
@@ -68,14 +81,14 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
     const createContent = (data: { label: string; href: string; icon: string }[]) => (
         <div className="flex flex-col gap-3">
             {data.map((item, idx) => (
-                <Link
-                    href={item.href}
+                <div
+                    onClick={() => handleNavClick(item.href)}
                     key={idx}
                     className="font-medium text-[16px] flex items-center gap-x-2 py-2 hover:bg-[#2e86fe] text-link-color hover:text-white rounded-md w-full transition-all"
                 >
                     <span className={`icon icon-${item.icon} text-xl px-2`} />
                     <span>{item.label}</span>
-                </Link>
+                </div>
             ))}
         </div>
     );
@@ -111,8 +124,8 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                     {/* NAV LINKS */}
                     <div className="pt-5 sm:pt-12 flex flex-col gap-3">
                         {navLinks.map((item, idx) => (
-                            <Link
-                                href={item.href}
+                            <div
+                                onClick={() => handleNavClick(item.href)}
                                 key={idx}
                                 className="font-medium text-[16px] flex items-center gap-x-2 py-2 hover:bg-[#2e86fe] active:bg-[#2e86fe] text-link-color hover:text-white rounded-md w-full transition-all"
                             >
@@ -120,7 +133,7 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                                     className={`icon-pds icon-${item.icon} text-xl px-2`}
                                 />
                                 <span>{item.label}</span>
-                            </Link>
+                            </div>
                         ))}
                     </div>
 
@@ -173,10 +186,10 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                 </div>
 
                 <div className="w-full sm:overflow-hidden  sm:sticky  right-0 left-0  shrink-0   bg-[#2c3a4d]  bottom-0 rounded-rb-full flex flex-col items-center justify-center p-4 pb-2">
-                    <button onClick={() => { }} className="bg-medium-blue cursor-pointer hover:opacity-90 duration-300 py-2 px-6  flex  flex-row gap-x-4  items-center justify-center rounded-full border border-transparent w-full text-white ">
+                    <Link href="/profile/default/deposit" className="bg-medium-blue cursor-pointer hover:opacity-90 duration-300 py-2 px-6  flex  flex-row gap-x-4  items-center justify-center rounded-full border border-transparent w-full text-white ">
                         <span className="icon icon-add-funds text-[1.5rem] md:text-3xl" />
                         <span className='text-md sm:text-lg lg:text-xl font-semibold'> Add Funds</span>
-                    </button>
+                    </Link>
 
                     <div className="flex flex-col gap-y-3 items-start w-full my-3 shrink-0">
                         {balanceItems.map(([Key, value], idx) => (

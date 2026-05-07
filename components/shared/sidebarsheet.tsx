@@ -186,10 +186,10 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                 </div>
 
                 <div className="w-full sm:overflow-hidden  sm:sticky  right-0 left-0  shrink-0   bg-[#2c3a4d]  bottom-0 rounded-rb-full flex flex-col items-center justify-center p-4 pb-2">
-                    <Link href="/profile/default/deposit" className="bg-medium-blue cursor-pointer hover:opacity-90 duration-300 py-2 px-6  flex  flex-row gap-x-4  items-center justify-center rounded-full border border-transparent w-full text-white ">
+                    <div onClick={() => handleNavClick("/profile/default/deposit")} className="bg-medium-blue cursor-pointer hover:opacity-90 duration-300 py-2 px-6  flex  flex-row gap-x-4  items-center justify-center rounded-full border border-transparent w-full text-white ">
                         <span className="icon icon-add-funds text-[1.5rem] md:text-3xl" />
                         <span className='text-md sm:text-lg lg:text-xl font-semibold'> Add Funds</span>
-                    </Link>
+                    </div>
 
                     <div className="flex flex-col gap-y-3 items-start w-full my-3 shrink-0">
                         {balanceItems.map(([Key, value], idx) => (

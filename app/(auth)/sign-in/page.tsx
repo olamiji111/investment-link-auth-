@@ -4,7 +4,14 @@ import Header from '@/sections/header';
 import { Eye, EyeOff, Mail, Lock, MessageSquareMore } from 'lucide-react';
 import Link from 'next/link';
 import { socialsMediaLogins } from '@/constants';
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox";
+import { LoginSchema } from '@/lib/validations/signupschema';
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { signIn } from '@/lib/actions/auth.action';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from "@/firebase/client";
+import { getLoginErrorMessage } from "@/utils/loginerrormessage"
 
 interface FormData {
     email: string;
@@ -20,11 +27,19 @@ interface LoginState {
     state: "Sign In" | "Forget Password";
 }
 
-
+interface FormError {
+    email: string;
+    password: string;
+}
 const LoginState = ({ loginState, setLoginState }: LoginStateProps) => {
     const formRef = useRef<HTMLFormElement | null>(null);
-
+    const router = useRouter();
     const [form, setFormData] = useState<FormData>({
+        email: "",
+        password: ""
+    });
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<FormError>({
         email: "",
         password: ""
     });
@@ -36,44 +51,138 @@ const LoginState = ({ loginState, setLoginState }: LoginStateProps) => {
             ...prev, [name]: value
         }))
     }
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const result = LoginSchema.safeParse(form);
+
+        if (!result.success) {
+            const errors = result.error.issues;
+
+            const formatted = {
+                name: "",
+                email: "",
+                password: "",
+            };
+
+            errors.forEach((err) => {
+                const field = err.path[0] as keyof typeof formatted;
+
+                if (field in formatted) {
+                    formatted[field] = err.message;
+                }
+            });
+
+            setError(formatted);
+            return;
+        }
+        setError({
+            email: "",
+            password: ""
+        });
+
+        setLoading(true);
+
+        let timeout: NodeJS.Timeout | null = null;
+
+        try {
+            const { email, password } = result.data;
+            timeout = setTimeout(() => {
+                setLoading(false);
+                toast.error("Login timed out. Please try again.");
+
+            }, 30000);
+
+            const userCredential = await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+
+            );
+
+            const user = userCredential.user;
+
+            const idToken = await user.getIdToken();
+
+            if (!idToken) {
+                throw new Error("Failed to retrieve token");
+
+            }
+            const res = await signIn({
+                email,
+                idToken,
+
+            });
+
+            if (!res?.success) {
+                throw new Error(res?.message || "Login failed");
+
+            }
+
+            toast.success("Signed in successfully");
+            router.push(`/profile/${user.uid}/trade`);
+
+        } catch (error: unknown) {
+            console.error("LOGIN ERROR:", error);
+            const message = getLoginErrorMessage(error);
+            toast.error(message);
+        } finally {
+            if (timeout) clearTimeout(timeout);
+            setLoading(false);
+        }
+    };
+
     return (
         <div>
-            <form ref={formRef} className='flex flex-col gap-6 w-full p-8 pb-0' >
-
-                <div data-slot='email input' className=' w-full border-b border-zinc-300  bg-transparent py-2 px-2 mt-1'>
-                    <div className='flex flex-row gap-x-2 items-center '>
-                        <Mail className='size-6 text-zinc-400' strokeWidth={2} />
-                        <input
-                            onChange={onChangeEvent}
-                            value={form.email}
-                            name="email"
-                            type="email"
-                            placeholder='Email'
-                            className='text-black text-[16px] font-normal w-full pr-8 pl-2 brder-none outline-none bg-transparent placeholder:text-zinc-400 placeholder:text-[17px] placeholder:font-medium'
-                        />
+            <form ref={formRef} onSubmit={handleLogin} className='flex flex-col gap-6 w-full p-8 pb-0' >
+                <div className='flex flex-col gap-y-2 w-full items-start'>
+                    <div data-slot='email input' className=' w-full border-b border-zinc-300  bg-transparent py-2 px-2 mt-1'>
+                        <div className='flex flex-row gap-x-2 items-center '>
+                            <Mail className='size-6 text-zinc-400' strokeWidth={2} />
+                            <input
+                                onChange={onChangeEvent}
+                                value={form.email}
+                                name="email"
+                                type="text"
+                                placeholder='Email'
+                                className='text-black text-[16px] font-normal w-full pr-8 pl-2 brder-none outline-none bg-transparent placeholder:text-zinc-400 placeholder:text-[17px] placeholder:font-medium'
+                            />
+                        </div>
                     </div>
+
+                    {error.email && (
+                        <span className='text-red-600 text-xs'> {error.email} </span>
+                    )}
                 </div>
 
-                <div data-slot='password input' className='w-full overflow-hidden border-b border-zinc-300  bg-transparent py-2 px-2 mt-1'>
-                    <div className='flex flex-row gap-x-2 items-center  justify-between'>
-                        <Lock className='size-6 text-zinc-400' strokeWidth={2} />
-                        <input
-                            type={!showPassword ? "text" : "password"}
-                            onChange={onChangeEvent}
-                            value={form.password}
-                            name="password"
-                            placeholder='Password'
-                            className={` text-black text-[16px] font-normal w-full pl-1 pr-2  brder-none outline-none bg-transparent placeholder:text-zinc-400 placeholder:text-[16px] placeholder:font-medium ${showPassword ? 'tracking-[0.18rem]' : 'tracking-normal'}  placeholder:tracking-normal`}
-                        />
-                        <button onClick={() => setShowPassword(!showPassword)} className='text-zinc-400 cursor-pointer transition-all duuration-300'>
-                            {!showPassword ?
-                                <EyeOff className='size-5 ' strokeWidth={3} />
-                                :
-                                <Eye className='size-5 ' strokeWidth={3} />
-                            }
-                        </button>
+                {/* Password Input */}
+                <div className='flex flex-col gap-y-2 w-full items-start'>
+                    <div data-slot='password input' className='w-full overflow-hidden border-b border-zinc-300  bg-transparent py-2 px-2 mt-1'>
+                        <div className='flex flex-row gap-x-2 items-center  justify-between'>
+                            <Lock className='size-6 text-zinc-400' strokeWidth={2} />
+                            <input
+                                type={!showPassword ? "text" : "password"}
+                                onChange={onChangeEvent}
+                                value={form.password}
+                                name="password"
+                                placeholder='Password'
+                                className={` text-black text-[16px] font-normal w-full pl-1 pr-2  brder-none outline-none bg-transparent placeholder:text-zinc-400 placeholder:text-[16px] placeholder:font-medium ${showPassword ? 'tracking-[0.18rem]' : 'tracking-normal'}  placeholder:tracking-normal`}
+                            />
+                            <button onClick={() => setShowPassword(!showPassword)} className='text-zinc-400 cursor-pointer transition-all duuration-300'>
+                                {!showPassword ?
+                                    <EyeOff className='size-5 ' strokeWidth={3} />
+                                    :
+                                    <Eye className='size-5 ' strokeWidth={3} />
+                                }
+                            </button>
+                        </div>
                     </div>
+                    {error.password && !error.email && (
+                        <span className='text-red-600 text-xs'> {error.password} </span>
+                    )}
                 </div>
+
                 <button
                     type="submit"
                     className="w-full py-3  text-[hsla(0,0%,100%,.949)] text-md font-bold rounded-[0.3rem] cursor-pointer transition-all duration-300

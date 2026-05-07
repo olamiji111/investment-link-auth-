@@ -1,5 +1,3 @@
-
-
 export type DepositMethod = "Card" | "Cryptocurrency" | "Bank Transfer" | "BRE Gift Card" | "PayPal";
 
 export type AccountBalance = {
@@ -9,4 +7,16 @@ export type AccountBalance = {
     profit: number,
     "I.Margin": number;
 
+};
+
+export interface SignUpParams {
+    uid: string;
+    name: string;
+    email: string;
+    password: string;
+};
+
+export type SignInParams = {
+    email: string;
+    idToken: string;
 };

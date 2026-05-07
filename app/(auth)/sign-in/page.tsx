@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
 import Header from '@/sections/header';
 import { Eye, EyeOff, Mail, Lock, MessageSquareMore } from 'lucide-react';
 import Link from 'next/link';
+import Image from "next/image";
 import { socialsMediaLogins } from '@/constants';
 import { Checkbox } from "@/components/ui/checkbox";
 import { LoginSchema } from '@/lib/validations/signupschema';
@@ -12,6 +13,7 @@ import { signIn } from '@/lib/actions/auth.action';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "@/firebase/client";
 import { getLoginErrorMessage } from "@/utils/loginerrormessage"
+import { useSocialLogin } from "@/lib/actions/socialsignup";
 
 interface FormData {
     email: string;
@@ -19,10 +21,26 @@ interface FormData {
 };
 
 interface LoginStateProps {
-    loginState: LoginState;
-    setLoginState: Dispatch<SetStateAction<LoginState>>;
-}
 
+    loginState: LoginState;
+
+    setLoginState: Dispatch<SetStateAction<LoginState>>;
+
+    loading: boolean;
+
+    setLoading: Dispatch<SetStateAction<boolean>>;
+
+    socialLoading: boolean;
+
+    handleSocialLogin: (provider: string) => void;
+
+};
+interface ForgetPasswordProps {
+
+    loginState: LoginState;
+
+    setLoginState: Dispatch<SetStateAction<LoginState>>;
+};
 interface LoginState {
     state: "Sign In" | "Forget Password";
 }
@@ -31,14 +49,15 @@ interface FormError {
     email: string;
     password: string;
 }
-const LoginState = ({ loginState, setLoginState }: LoginStateProps) => {
+const LoginState = ({ loginState, setLoginState, loading, setLoading, handleSocialLogin, socialLoading }: LoginStateProps) => {
     const formRef = useRef<HTMLFormElement | null>(null);
     const router = useRouter();
+
     const [form, setFormData] = useState<FormData>({
         email: "",
         password: ""
     });
-    const [loading, setLoading] = useState<boolean>(false);
+
     const [error, setError] = useState<FormError>({
         email: "",
         password: ""
@@ -202,7 +221,11 @@ const LoginState = ({ loginState, setLoginState }: LoginStateProps) => {
 
                 <div data-slot="socials media Logins" className='flex flex-row gap-x-3 items-center'>
                     {socialsMediaLogins.map(({ name, icon: Icon }, idx) => (
-                        <button key={idx} className='cursor-pointer flex items-center justify-center shrink-0 p-2 border border-[#dadce0] rounded-[0.25rem] transition-colors duration-300 hover:bg-[rgba(66,133,244,.08)]  hover:border-[rgb(210,227,252)] active:bg-[rgba(66,133,244,.12)]'>
+                        <button
+                            onClick={() => handleSocialLogin(name.trim().toLowerCase())}
+                            key={idx}
+                            className='cursor-pointer flex items-center justify-center shrink-0 p-2 border border-[#dadce0] rounded-[0.25rem] transition-colors duration-300 hover:bg-[rgba(66,133,244,.08)]  hover:border-[rgb(210,227,252)] active:bg-[rgba(66,133,244,.12)]'
+                        >
                             <Icon className='size-5' />
                         </button>
                     ))}
@@ -217,7 +240,7 @@ const LoginState = ({ loginState, setLoginState }: LoginStateProps) => {
     )
 };
 
-const ForgotPasswordState = ({ loginState, setLoginState }: LoginStateProps) => {
+const ForgotPasswordState = ({ loginState, setLoginState }: ForgetPasswordProps) => {
     const [email, setEmail] = useState<string>("");
 
     const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -258,7 +281,8 @@ const ForgotPasswordState = ({ loginState, setLoginState }: LoginStateProps) => 
 }
 
 const SignIn = () => {
-
+    const [loading, setLoading] = useState<boolean>(false);
+    const { handleSocialLogin, socialloading } = useSocialLogin();
     const chatRef = useRef<HTMLButtonElement | null>(null);
     const [loginState, setLoginState] = useState<LoginState>({ state: "Sign In" });
 
@@ -273,11 +297,32 @@ const SignIn = () => {
     return (
         <main className=" h-dvh" >
             <Header />
-            <div className='h-full py-12 px-4 sm:px-6 lg:px-8 '>
+            <div className='relative h-full py-12 px-4 sm:px-6 lg:px-8 '>
+                {(loading || socialloading) && (
+
+                    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-none">
+
+                        <div className="flex flex-row items-center gap-x-2">
+
+                            <Image
+                                alt="loading"
+                                src="/asset/images/loading.webp"
+                                width={20}
+                                height={20}
+                                className="w-16 h-16 object-contain"
+                            />
+
+                            <p className="text-link-color text-[17px] font-semibold">Loggin In...</p>
+
+                        </div>
+
+                    </div>
+
+                )}
                 <div className='px-1 py-8 flex flex-col items-center justify-center '>
                     <div className='mt-4 w-full sm:w-11/12 md:w-7/12  border  border-zinc-300 overflow-hidden  bg-transparent rounded-xs  '>
                         {loginState.state === "Sign In" ?
-                            <LoginState loginState={loginState} setLoginState={setLoginState} />
+                            <LoginState loginState={loginState} setLoginState={setLoginState} loading={loading} setLoading={setLoading} handleSocialLogin={handleSocialLogin} socialLoading={socialloading} />
                             :
                             <ForgotPasswordState loginState={loginState} setLoginState={setLoginState} />
                         }

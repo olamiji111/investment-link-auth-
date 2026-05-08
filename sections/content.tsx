@@ -105,8 +105,8 @@ const Content = () => {
 
             await sendEmailVerification(user);
 
-            toast.success("Verification email sent. Please check your inbox.", {
-                duration: 4000
+            toast.success("Verification email sent. Please check your email or spam inbox.", {
+                duration: 5000
             });
 
             const res = await signUpUser({
@@ -151,7 +151,7 @@ const Content = () => {
 
                     toast.error("Verification timed out. Please try again.");
                 }
-            }, 60000);
+            }, 45000);
 
         } catch (err: unknown) {
             console.error("SIGNUP ERROR:", err);

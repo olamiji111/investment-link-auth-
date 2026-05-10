@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Sheet,
     SheetTrigger,
@@ -24,8 +24,8 @@ import type { AccountBalance } from "@/types";
 import { useBalanceStore } from "@/store";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-
-
+import { getCurrentUser } from "@/lib/actions/auth.action";
+import { AppUser } from "@/types";
 interface SheetProps {
     open: boolean;
     setOpen: (b: boolean) => void;
@@ -48,8 +48,26 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
     const currentBalance = useBalanceStore((state) =>
         state.balances[state.currentUserId] ?? defaulTAccountBalance
     );
+    const [user, setUser] = useState<AppUser | null>(null);
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
-    const pathname = usePathname()
+    const pathname = usePathname();
+
+    useEffect(() => {
+        const loadUser = async () => {
+            try {
+                const res = await getCurrentUser();
+                setUser(res);
+            } catch (err) {
+                console.log("Failed to load user", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadUser();
+    }, []);
+
 
     const handleNavClick = (href: string) => {
         if (pathname === href) {
@@ -112,12 +130,24 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                     <div className="flex gap-x-3 items-center ">
                         <User />
                         <div>
-                            <span className="text-sm font-medium text-black">
-                                Olamiji Odubote
-                            </span>
-                            <span className="text-sm text-zinc-500 block">
-                                oduboteolamiji@gmail.comss
-                            </span>
+                            {loading ? (
+                                <span className="text-sm text-zinc-500">Loading...</span>
+                            ) : (
+                                <>
+                                    <span className="text-sm font-medium text-black">
+                                        {user?.name ? (
+                                            <span>  {user?.name} </span>
+                                        ) : (
+                                            null
+                                        )
+                                        }
+                                    </span>
+
+                                    <span className="text-sm text-zinc-500 block">
+                                        {user?.email ?? ""}
+                                    </span>
+                                </>
+                            )}
                         </div>
                     </div>
 

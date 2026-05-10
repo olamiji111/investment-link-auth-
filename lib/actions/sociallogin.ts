@@ -26,22 +26,22 @@ const getAuthErrorMessage = (error: unknown, provider: string) => {
 
     switch (code) {
         case "auth/popup-closed-by-user":
-            return "Signing Up  Cancelled";
+            return "Login cancelled";
 
         case "auth/cancelled-popup-request":
-            return "Signup process cancelled";
+            return "Login cancelled";
 
         case "auth/account-exists-with-different-credential":
             return "Account exists. Signing you in...";
 
         case "auth/operation-not-allowed":
-            return `${provider} signup  is not available at the moment`;
+            return `${provider} login is not available at the moment`;
 
         case "auth/network-request-failed":
             return "Network error. Check your connection";
 
         default:
-            return `${provider} signup failed. Please try again`;
+            return `${provider} login failed. Please try again`;
     }
 };
 

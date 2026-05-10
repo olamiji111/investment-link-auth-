@@ -20,3 +20,19 @@ export type SignInParams = {
     email: string;
     idToken: string;
 };
+export interface AppUser {
+    id: string;
+
+    name: string;
+    email: string;
+
+    createdAt: string;
+
+    Available: number;
+    Equity: number;
+    "M.Margin": number;
+    "I.Margin": number;
+    profit: number;
+
+
+}

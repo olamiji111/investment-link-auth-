@@ -13,7 +13,7 @@ import { signIn } from '@/lib/actions/auth.action';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "@/firebase/client";
 import { getLoginErrorMessage } from "@/utils/loginerrormessage"
-import { useSocialLogin } from "@/lib/actions/socialsignup";
+import { useSocialLogin } from "@/lib/actions/sociallogin";
 
 interface FormData {
     email: string;

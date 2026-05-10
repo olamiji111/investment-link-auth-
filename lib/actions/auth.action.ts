@@ -1,10 +1,9 @@
 
 "use server";
-
 import { auth, db } from "@/firebase/admin";
 import { SignUpParams, SignInParams } from "@/types";
 import { cookies } from "next/headers";
-
+import { AppUser } from "@/types";
 
 // Session duration (1 week)
 const SESSION_DURATION = 60 * 60 * 24 * 7;
@@ -56,7 +55,7 @@ export async function signUpUser(params: SignUpParams) {
             "M.Margin": 0,
             "I.Margin": 0,
             profit: 0,
-            botActive: true,
+
         });
 
         return {
@@ -116,5 +115,38 @@ export async function signIn(params: SignInParams) {
             success: false,
             message: "Failed to log into account. Please try again.",
         };
+    }
+}
+
+//get current User
+
+export async function getCurrentUser(): Promise<AppUser | null> {
+    const cookieStore = await cookies();
+
+    const sessionCookie = cookieStore.get("session")?.value;
+
+    if (!sessionCookie) return null;
+
+    try {
+        const decodedClaims = await auth.verifySessionCookie(
+            sessionCookie,
+            true
+        );
+
+        const userRecord = await db
+            .collection("users")
+            .doc(decodedClaims.uid)
+            .get();
+
+        if (!userRecord.exists) return null;
+
+        return {
+            id: userRecord.id,
+            ...userRecord.data(),
+        } as AppUser;
+
+    } catch (error) {
+        console.log("Session error:", error);
+        return null;
     }
 }

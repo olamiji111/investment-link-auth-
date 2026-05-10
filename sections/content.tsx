@@ -70,29 +70,23 @@ const Content = () => {
 
             errors.forEach((err) => {
                 const field = err.path[0] as keyof typeof formatted;
-
-                if (field in formatted) {
-                    formatted[field] = err.message;
-                }
+                if (field in formatted) formatted[field] = err.message;
             });
 
             setError(formatted);
             return;
         }
 
-        setError({
-            name: "",
-            email: "",
-            password: ""
-        });
-
+        setError({ name: "", email: "", password: "" });
         setLoading(true);
 
         let interval: NodeJS.Timeout | null = null;
+        let timeout: NodeJS.Timeout | null = null;
         let finished = false;
 
         try {
             const { name, email, password } = result.data;
+
 
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
@@ -103,25 +97,10 @@ const Content = () => {
             const user = userCredential.user;
             const uid = user.uid;
 
+
             await sendEmailVerification(user);
 
-            toast.success("Verification email sent. Please check your email or spam inbox.", {
-                duration: 5000
-            });
-
-            const res = await signUpUser({
-                uid,
-                name,
-                email,
-                password
-            });
-
-            if (!res.success) {
-                await userCredential.user.delete();
-                toast.error(res.message);
-                setLoading(false);
-                return;
-            }
+            toast.success("Verification email sent. Verify within 1 minute.", { duration: 4000 });
 
 
             interval = setInterval(async () => {
@@ -131,9 +110,23 @@ const Content = () => {
                     finished = true;
 
                     if (interval) clearInterval(interval);
+                    if (timeout) clearTimeout(timeout);
+
+
+                    const res = await signUpUser({
+                        uid,
+                        name,
+                        email,
+                        password,
+                    });
+
+                    if (!res.success) {
+                        toast.error(res.message);
+                        setLoading(false);
+                        return;
+                    }
 
                     toast.success("Email verified successfully!");
-
                     setLoading(false);
 
                     router.push(`/profile/${uid}/trade`);
@@ -141,22 +134,28 @@ const Content = () => {
             }, 3000);
 
 
-            setTimeout(() => {
-                if (!finished) {
-                    finished = true;
+            timeout = setTimeout(async () => {
+                if (finished) return;
 
-                    if (interval) clearInterval(interval);
+                finished = true;
 
-                    setLoading(false);
+                if (interval) clearInterval(interval);
 
-                    toast.error("Verification timed out. Please try again.");
+                try {
+                    await user.delete(); // remove unverified auth user
+                } catch (err) {
+                    console.log("Failed to delete unverified user:", err);
                 }
-            }, 45000);
+
+                toast.error("Verification timed out. Please sign up again.");
+                setLoading(false);
+            }, 40 * 1000);
 
         } catch (err: unknown) {
             console.error("SIGNUP ERROR:", err);
 
             if (interval) clearInterval(interval);
+            if (timeout) clearTimeout(timeout);
 
             setLoading(false);
 
@@ -166,7 +165,7 @@ const Content = () => {
                 if (firebaseError.code === "auth/email-already-in-use") {
                     setError((prev) => ({
                         ...prev,
-                        email: "This email is already in use."
+                        email: "This email is already in use.",
                     }));
                 } else {
                     toast.error(firebaseError.message || "An unexpected error occurred.");
@@ -178,7 +177,6 @@ const Content = () => {
             }
         }
     };
-
     const handleLiveChatClick = () => {
         if (chatRef.current) {
             chatRef.current.click();

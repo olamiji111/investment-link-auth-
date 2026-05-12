@@ -1,7 +1,8 @@
 import { AccountBalance } from "@/types";
 import { create } from "zustand";
 import { Balances } from "@/constants";
-
+import { AppUser } from "@/types";
+import { getCurrentUser } from "@/lib/actions/auth.action";
 
 type BalanceState = {
     currentUserId: string;
@@ -42,5 +43,44 @@ export const useBalanceStore = create<BalanceState>((set, get) => ({
 
     }
 
+}));
+
+
+type UserState = {
+    user: AppUser | null;
+    loading: boolean;
+
+    setUser: (user: AppUser | null) => void;
+    fetchUser: () => Promise<void>;
+    clearUser: () => void;
+};
+
+export const useUserStore = create<UserState>((set) => ({
+    user: null,
+    loading: false,
+
+    setUser: (user) => set({ user }),
+
+    clearUser: () => set({ user: null }),
+
+    fetchUser: async () => {
+        set({ loading: true });
+
+        try {
+            const user = await getCurrentUser();
+
+            if (!user) {
+                set({ user: null });
+                return;
+            }
+
+            set({ user });
+        } catch (err) {
+            console.log("fetchUser error:", err);
+            set({ user: null });
+        } finally {
+            set({ loading: false });
+        }
+    },
 }));
 

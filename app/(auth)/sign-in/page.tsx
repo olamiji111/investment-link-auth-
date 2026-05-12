@@ -15,6 +15,8 @@ import { auth } from "@/firebase/client";
 import { getLoginErrorMessage } from "@/utils/loginerrormessage"
 import { useSocialLogin } from "@/lib/actions/sociallogin";
 
+
+
 interface FormData {
     email: string;
     password: string;
@@ -232,7 +234,7 @@ const LoginState = ({ loginState, setLoginState, loading, setLoading, handleSoci
                 </div>
 
                 <div className='flex flex-row gap-x-2 items-center mt-4'>
-                    <Checkbox id="keep-logged-in" className=' cursor-pointer data-checked:bg-link-hover data-checked:border-transparent' />
+                    <Checkbox id="keep-logged-in" className=' cursor-pointer data-unchecked:bg-gray-200  data-checked:bg-link-hover data-checked:border-transparent' />
                     <label htmlFor="keep-logged-in" className='text-black text-sm font-medium cursor-pointer'> Keep me logged in </label>
                 </div>
             </div>
@@ -328,7 +330,7 @@ const SignIn = () => {
                         }
                         <div className='mt-5'>
                             <button ref={chatRef} onClick={handleLiveChatClick} className=' flex items-center justify-center shrink-0  flex-row gap-x-1 space-x-1 cursor-pointer transition-colors duration-300 select-none text-[14px] font-normal border border-transparent text-link-color hover:text-white   ease-in-out bg-[#f3f4f9] hover:bg-[#2e86fe] font-semibold w-full h-10'>
-                                <MessageSquareMore className='size-5 ' strokeWidth={2} />
+                                <span className='icon icon-livechat text-lg' />
                                 <span> Live Support </span>
                             </button>
                         </div>

@@ -4,11 +4,11 @@ import type { AccountBalance, DepositMethod } from "@/types";
 
 
 export const tradingFeatures: string[] = [
-    "Free and unlimited Demo trading",
-    "Over 2800 leveraged instruments",
-    "Tight spreads & no commissions",
-    "Cutting-edge trading technology",
-    "Comprehensive Trading Academy",
+    "Instant and secure withdrawals",
+    "Every 24-hour  trade summary of Bot activities",
+    "Automated wealth growth",
+    "Bot uses Global instruments and commodities",
+    "Seamless portfolio transfers",
 ];
 
 export const Languages: string[] = [

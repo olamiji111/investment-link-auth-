@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { AppUser } from "@/types";
 
 // Session duration (1 week)
-const SESSION_DURATION = 60 * 60 * 24 * 7;
+const SESSION_DURATION = 60 * 60 * 24;
 
 // Set session cookie
 export async function setSessionCookie(idToken: string) {
@@ -119,34 +119,51 @@ export async function signIn(params: SignInParams) {
 }
 
 //get current User
-
 export async function getCurrentUser(): Promise<AppUser | null> {
-    const cookieStore = await cookies();
-
-    const sessionCookie = cookieStore.get("session")?.value;
-
-    if (!sessionCookie) return null;
-
     try {
-        const decodedClaims = await auth.verifySessionCookie(
-            sessionCookie,
-            true
-        );
+        const cookieStore = await cookies();
+        const sessionCookie = cookieStore.get("session")?.value;
 
-        const userRecord = await db
-            .collection("users")
-            .doc(decodedClaims.uid)
-            .get();
+        if (!sessionCookie) return null;
 
-        if (!userRecord.exists) return null;
+
+        const decoded = await auth.verifySessionCookie(sessionCookie, true);
+        const uid = decoded.uid;
+
+
+        const userSnap = await db.collection("users").doc(uid).get();
+
+        if (!userSnap.exists) {
+            return null;
+        }
+
+        const data = userSnap.data() as AppUser;
+
+
+        let authUser = null;
+
+        try {
+            authUser = await auth.getUser(uid);
+        } catch {
+            authUser = null;
+        }
 
         return {
-            id: userRecord.id,
-            ...userRecord.data(),
-        } as AppUser;
+            id: uid,
 
+            name: data?.name || authUser?.displayName || "",
+            email: data?.email || authUser?.email || "",
+
+            Available: data?.Available ?? 0,
+            Equity: data?.Equity ?? 0,
+            "M.Margin": data?.["M.Margin"] ?? 0,
+            "I.Margin": data?.["I.Margin"] ?? 0,
+            profit: data?.profit ?? 0,
+
+            createdAt: data?.createdAt ?? "",
+        };
     } catch (error) {
-        console.log("Session error:", error);
+        console.log("getCurrentUser error:", error);
         return null;
     }
 }

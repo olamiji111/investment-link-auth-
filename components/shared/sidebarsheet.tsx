@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import { AppUser } from "@/types";
+import { useUserStore } from "@/store";
 interface SheetProps {
     open: boolean;
     setOpen: (b: boolean) => void;
@@ -48,25 +49,15 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
     const currentBalance = useBalanceStore((state) =>
         state.balances[state.currentUserId] ?? defaulTAccountBalance
     );
-    const [user, setUser] = useState<AppUser | null>(null);
-    const [loading, setLoading] = useState(true);
+
     const router = useRouter();
     const pathname = usePathname();
 
     useEffect(() => {
-        const loadUser = async () => {
-            try {
-                const res = await getCurrentUser();
-                setUser(res);
-            } catch (err) {
-                console.log("Failed to load user", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadUser();
+        useUserStore.getState().fetchUser();
     }, []);
+    const user = useUserStore((state) => state.user);
+    const loading = useUserStore((state) => state.loading);
 
 
     const handleNavClick = (href: string) => {
@@ -134,17 +125,9 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                                 <span className="text-sm text-zinc-500">Loading...</span>
                             ) : (
                                 <>
-                                    <span className="text-sm font-medium text-black">
-                                        {user?.name ? (
-                                            <span>  {user?.name} </span>
-                                        ) : (
-                                            null
-                                        )
-                                        }
-                                    </span>
-
+                                    <span>{user?.name || ""}</span>
                                     <span className="text-sm text-zinc-500 block">
-                                        {user?.email ?? ""}
+                                        {user?.email || ""}
                                     </span>
                                 </>
                             )}

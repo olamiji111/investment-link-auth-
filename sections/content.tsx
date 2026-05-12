@@ -2,9 +2,8 @@
 import React, { useState, useRef } from 'react'
 import Image from "next/image";
 import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, User, MessageSquareMore, Check } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, Check } from 'lucide-react';
 import { socialsMediaLogins, tradingFeatures } from '@/constants';
-import TradingViewOilChart from '@/components/shared/tradingview';
 import { useRouter } from 'next/navigation';
 import { SignUpSchema } from '@/lib/validations/signupschema';
 import { signUpUser } from '@/lib/actions/auth.action';
@@ -149,7 +148,7 @@ const Content = () => {
 
                 toast.error("Verification timed out. Please sign up again.");
                 setLoading(false);
-            }, 40 * 1000);
+            }, 50 * 1000);
 
         } catch (err: unknown) {
             console.error("SIGNUP ERROR:", err);
@@ -202,7 +201,7 @@ const Content = () => {
                                 className="w-16 h-16 object-contain"
                             />
 
-                            <p className="text-link-color text-[17px] font-semibold">Loggin In...</p>
+                            <p className="text-link-color text-[17px] font-semibold">Processing...</p>
 
                         </div>
 
@@ -210,7 +209,7 @@ const Content = () => {
 
                 )}
                 <form ref={formRef} onSubmit={formSubmitHandler} className='flex  flex-col gap-y-6 items-center px-4 '>
-                    <h2 className='text-[1.75rem] text-logo-color leading-9 text-center font-semibold'> Join 33+ million who have chosen TradeBot</h2>
+                    <h2 className='text-[1.75rem] text-logo-color  leading-9 text-center font-semibold'> Millions trust AutoTrader for smarter trading </h2>
                     {/* Email Input*/}
                     <div className='flex flex-col items-start gap-y-2 w-full'>
                         <div data-slot='FullName input' className='relative w-full overflow-hidden border border-zinc-400 rounded-[0.35rem] bg-transparent py-2.5 px-3 mt-1'>
@@ -308,17 +307,17 @@ const Content = () => {
                     </div>
                 </div>
                 <div className="pt-6  mt-3 flex flex-row items-center justify-between w-full px-2">
-                    <Link href="/sign-in" className='cursor-pointer transition-colors duration-300 select-none text-[15px] font-[500] text-link-color hover:text-link-hover active:text-link-hover'>
+                    <Link href="/sign-in" className='cursor-pointer transition-colors duration-300 select-none text-[15px] font-[500] text-link-color hover:text-link-hover active:text-link-hover px-2'>
                         Already have an account?
                     </Link>
-                    <button ref={chatRef} onClick={handleLiveChatClick} className='z-10 flex shrink-0  flex-row gap-x-1  items-center space-x-1 cursor-pointer transition-colors duration-300 select-none text-[14px] font-normal border border-transparent text-link-color hover:text-white rounded-full px-3 py-2.5   ease-in-out bg-[#f3f4f9] hover:bg-[#2e86fe] font-semibold'>
-                        <MessageSquareMore className='size-5 ' strokeWidth={2} />
+                    <button ref={chatRef} onClick={handleLiveChatClick} className='flex shrink-0  flex-row gap-x-1  items-center space-x-1 cursor-pointer transition-colors duration-300 select-none text-[14px]  border border-transparent text-link-color hover:text-white rounded-full px-3 py-2.5   ease-in-out bg-[#f3f4f9] hover:bg-[#2e86fe] font-semibold'>
+                        <span className='icon icon-livechat text-lg' />
                         <span> Live Support </span>
                     </button>
                 </div>
             </div>
             <div className='flex flex-col gap-5 items-center justify-center'>
-                <p className='text-xs text-zinc-600 font-normal text-center'> 33+ million registered customers with the Plus500 Group. </p>
+                <p className='text-xs text-zinc-600 font-normal text-center'> 33+ million registered customers with the AutoTraderInc.</p>
 
                 <div data-slot="about plus500" className='relative py-6 bg-[#0c2780] w-full  border border-transparent shadow shadow-gradie'>
                     <div
@@ -352,8 +351,8 @@ const Content = () => {
                 </div>
             </div>
             <div className='py-8 mt-12 flex flex-col gap-4 items-center  justify-center px-4 sm:px-6 lg:px-8'>
-                <span className='text-center text-link-color text-[14px] font-normal'> Remember that CFDs are a leveraged product and can result in the loss of your entire capital. Trading CFDs may not be suitable for you. Please ensure you fully understand the risks involved. </span>
-                <div className='mt-2 text-zinc-400 text-[12px] font-medium'>
+                <span className='text-center font-medium text-link-color text-[14px] '> AutoTrader uses a highly trained trading bot, <span className='font-bold italic'>OrionAI</span>, with a high level of accuracy to manage your trades, executing buy and sell decisions at optimal market timing. Your open and closed orders are updated every 24 hours, allowing you to review exactly what <span className='font-bold italic'>OrionAI</span> has traded on your behalf. </span>
+                <div className='mt-2 text-zinc-500 text-[12px] font-medium'>
                     This site is protected by reCAPTCHA and by Google&apos;s
                     <Link href="/" className='cursor-pointer text-link-color hover:text-link-hover active:text-link-hover transition-colors duration-300 mx-1 '>
                         Privacy Policy
@@ -363,8 +362,8 @@ const Content = () => {
                         Terms of Service
                     </Link>
                 </div>
-                <span className='text-zinc-400 font-medium text-[12px]'>
-                    TradeBot is a trademark of Plus500 Ltd.
+                <span className='text-zinc-500 font-medium text-[12px]'>
+                    AutoTrader is a trademark of AutoTraderInc Ltd.
                 </span>
             </div>
         </>
@@ -372,3 +371,4 @@ const Content = () => {
 };
 
 export default Content;
+

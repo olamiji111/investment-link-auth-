@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
+import { signUpUser } from "@/lib/actions/auth.action";
+import { setSessionCookie } from "@/lib/actions/auth.action";
 
 
 
@@ -26,33 +28,35 @@ const getAuthErrorMessage = (error: unknown, provider: string) => {
 
     switch (code) {
         case "auth/popup-closed-by-user":
-            return "Login cancelled";
+            return "Logging Up  Cancelled";
 
         case "auth/cancelled-popup-request":
-            return "Login cancelled";
+            return "Logging process cancelled";
 
         case "auth/account-exists-with-different-credential":
-            return "Account exists. Signing you in...";
+            return "Logging you in...";
 
         case "auth/operation-not-allowed":
-            return `${provider} login is not available at the moment`;
+            return `${provider} Login  is not available at the moment`;
 
         case "auth/network-request-failed":
             return "Network error. Check your connection";
 
         default:
-            return `${provider} login failed. Please try again`;
+            return `${provider} Login failed. Please try again`;
     }
 };
+
+
+
 
 export const useSocialLogin = () => {
     const loginRef = useRef(0);
     const router = useRouter();
-    const [socialloading, setSocialLoading] = useState<boolean>(false);
+    const [socialloading, setSocialLoading] = useState(false);
 
     const handleSocialLogin = async (providerName: string) => {
         const currentRequest = ++loginRef.current;
-
         let timeoutId: NodeJS.Timeout | null = null;
 
         try {
@@ -63,9 +67,7 @@ export const useSocialLogin = () => {
             switch (providerName) {
                 case "google":
                     provider = new GoogleAuthProvider();
-                    provider.setCustomParameters({
-                        prompt: "select_account",
-                    });
+                    provider.setCustomParameters({ prompt: "select_account" });
                     break;
 
                 case "facebook":
@@ -83,7 +85,6 @@ export const useSocialLogin = () => {
                     return;
             }
 
-
             timeoutId = setTimeout(() => {
                 if (loginRef.current === currentRequest) {
                     setSocialLoading(false);
@@ -93,30 +94,34 @@ export const useSocialLogin = () => {
 
             const result = await signInWithPopup(auth, provider);
 
-
             if (loginRef.current !== currentRequest) return;
 
             if (timeoutId) clearTimeout(timeoutId);
 
             const user = result.user;
 
-            toast.success("Signing in with existing account...");
+            // 🔥 1. Ensure Firestore profile exists
+            await signUpUser({
+                uid: user.uid,
+                name: user.displayName || "",
+                email: user.email || "",
+            });
+
+            // 🔥 2. Create session cookie (VERY IMPORTANT FIX)
+            const idToken = await user.getIdToken();
+            await setSessionCookie(idToken);
+
+            toast.success("Login successful");
 
             router.push(`/profile/${user.uid}/trade`);
 
             return user;
-
         } catch (error: unknown) {
-
-
             if (loginRef.current !== currentRequest) return;
 
             if (timeoutId) clearTimeout(timeoutId);
 
-            const errMessage = getAuthErrorMessage(error, providerName);
-
-            toast.error(errMessage);
-
+            toast.error(getAuthErrorMessage(error, providerName));
         } finally {
             if (loginRef.current === currentRequest) {
                 if (timeoutId) clearTimeout(timeoutId);

@@ -6,7 +6,7 @@ import { Mail, Lock, Eye, EyeOff, User, Check } from 'lucide-react';
 import { socialsMediaLogins, tradingFeatures } from '@/constants';
 import { useRouter } from 'next/navigation';
 import { SignUpSchema } from '@/lib/validations/signupschema';
-import { signUpUser } from '@/lib/actions/auth.action';
+import { signIn, signUpUser } from '@/lib/actions/auth.action';
 import { auth } from "@/firebase/client";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { sendEmailVerification } from 'firebase/auth';
@@ -99,7 +99,7 @@ const Content = () => {
 
             await sendEmailVerification(user);
 
-            toast.success("Verification email sent. Verify within 1 minute.", { duration: 4000 });
+            toast.success("Verification email sent, check your email or spam box Verify within 1 minute.", { duration: 4000 });
 
 
             interval = setInterval(async () => {
@@ -116,16 +116,25 @@ const Content = () => {
                         uid,
                         name,
                         email,
-                        password,
                     });
 
                     if (!res.success) {
                         toast.error(res.message);
+                        return;
+                    }
+
+                    const idToken = await user.getIdToken();
+                    const loginRes = await signIn({
+                        email,
+                        idToken
+                    })
+                    if (!loginRes.message) {
+                        toast.error(loginRes.message || "Sign in failed after verification.");
                         setLoading(false);
                         return;
                     }
 
-                    toast.success("Email verified successfully!");
+                    toast.success("Email verified and signed Up process is complete.");
                     setLoading(false);
 
                     router.push(`/profile/${uid}/trade`);
@@ -351,7 +360,7 @@ const Content = () => {
                 </div>
             </div>
             <div className='py-8 mt-12 flex flex-col gap-4 items-center  justify-center px-4 sm:px-6 lg:px-8'>
-                <span className='text-center font-medium text-link-color text-[14px] '> AutoTrader uses a highly trained trading bot, <span className='font-bold italic'>OrionAI</span>, with a high level of accuracy to manage your trades, executing buy and sell decisions at optimal market timing. Your open and closed orders are updated every 24 hours, allowing you to review exactly what <span className='font-bold italic'>OrionAI</span> has traded on your behalf. </span>
+                <span className='text-center font-medium text-link-color text-[14px] '> AutoTrader uses a highly trained trading bot, <span className='font-bold'>Orion AI</span>, with a high level of accuracy to manage your trades, executing buy and sell decisions at optimal market timing. Your open and closed orders are updated every 24 hours, allowing you to review exactly what <span className='font-bold'>Orion AI</span> has traded on your behalf. </span>
                 <div className='mt-2 text-zinc-500 text-[12px] font-medium'>
                     This site is protected by reCAPTCHA and by Google&apos;s
                     <Link href="/" className='cursor-pointer text-link-color hover:text-link-hover active:text-link-hover transition-colors duration-300 mx-1 '>

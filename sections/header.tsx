@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <header className='fixed bg-white top-0 border-b w-full border-zinc-300  transition-all z-40'>
       <div className='max-w-full py-3 px-4 sm:px-5 lg:px-6 flex flex-row items-center justify-between w-full'>
-        <Link href="http://localhost:3001" aria-label='AutoTrader Investment Home page' className=' flex items-center   cursor-pointer flex-row  -space-x-7  duration-300 hover:-translate-z-0.5 active:translate-0.5'>
+        <Link href="/" aria-label='AutoTrader Investment Home page' className=' flex items-center   cursor-pointer flex-row  -space-x-7  duration-300 hover:-translate-z-0.5 active:translate-0.5'>
           <AutoTraderLogo className='h-full w-52' />
         </Link>
         <div className="relative w-[150px]">

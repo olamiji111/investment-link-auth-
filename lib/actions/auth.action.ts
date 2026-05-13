@@ -48,8 +48,6 @@ export async function signUpUser(params: SignUpParams) {
             name,
             email,
             createdAt: new Date().toISOString(),
-
-
             Available: 0,
             Equity: 0,
             "M.Margin": 0,

@@ -111,7 +111,7 @@ export const useSocialLogin = () => {
             if (signInResult.success) {
                 await setSessionCookie(idToken);
 
-                toast.success("Signed In with existing email", { duration: 3000 });
+                toast.success("Signing In with an existing email", { duration: 3000 });
 
                 router.push(`/profile/${user.uid}/trade`);
                 return user;

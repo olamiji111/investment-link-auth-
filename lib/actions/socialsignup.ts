@@ -5,6 +5,7 @@ import {
     FacebookAuthProvider,
     signInWithPopup,
     OAuthProvider,
+    getAdditionalUserInfo
 } from "firebase/auth";
 
 import { auth } from "@/firebase/client";
@@ -47,51 +48,70 @@ const getAuthErrorMessage = (error: unknown, provider: string) => {
     }
 };
 
-
-
-
 export const useSocialLogin = () => {
+
     const loginRef = useRef(0);
+
     const router = useRouter();
 
-    // ✅ THIS IS YOUR ORIGINAL STATE (keep it)
-    const [socialloading, setSocialLoading] = useState<boolean>(false);
+    const [socialloading, setSocialLoading] = useState(false);
 
     const handleSocialLogin = async (providerName: string) => {
+
         const currentRequest = ++loginRef.current;
+
         let timeoutId: NodeJS.Timeout | null = null;
 
         try {
-            setSocialLoading(true); // ✅ start loading
+
+            setSocialLoading(true);
 
             let provider;
 
             switch (providerName) {
+
                 case "google":
+
                     provider = new GoogleAuthProvider();
+
                     provider.setCustomParameters({ prompt: "select_account" });
+
                     break;
 
                 case "facebook":
+
                     provider = new FacebookAuthProvider();
+
                     break;
 
                 case "apple":
+
                     provider = new OAuthProvider("apple.com");
+
                     provider.addScope("email");
+
                     provider.addScope("name");
+
                     break;
 
                 default:
+
                     toast.error("Unsupported login method");
+
                     return;
+
             }
 
             timeoutId = setTimeout(() => {
+
                 if (loginRef.current === currentRequest) {
-                    setSocialLoading(false); // ✅ stop loading on timeout
+
+                    setSocialLoading(false);
+
                     toast.error("Login timed out. Please try again.");
+
                 }
+
             }, 20000);
 
             const result = await signInWithPopup(auth, provider);
@@ -101,37 +121,75 @@ export const useSocialLogin = () => {
             if (timeoutId) clearTimeout(timeoutId);
 
             const user = result.user;
+
             const idToken = await user.getIdToken();
 
-            const signInResult = await signIn({
-                email: user.email || "",
-                idToken,
-            });
+            // 🔥 REAL SOURCE OF TRUTH
 
-            if (signInResult.success) {
+            const additionalInfo = getAdditionalUserInfo(result);
+
+            const isNewUser = additionalInfo?.isNewUser;
+
+            // ========================
+
+            // ✅ EXISTING USER LOGIN
+
+            // ========================
+
+            if (!isNewUser) {
+
+                const loginRes = await signIn({
+
+                    email: user.email || "",
+
+                    idToken,
+
+                });
+
+                if (!loginRes.success) {
+
+                    toast.error(loginRes.message || "Login failed");
+
+                    return;
+
+                }
+
                 await setSessionCookie(idToken);
 
-                toast.success("Signing In with an existing email", { duration: 3000 });
+                toast.success("Logging you in with your existing account...");
 
                 router.push(`/profile/${user.uid}/trade`);
+
                 return user;
+
             }
 
+            // ========================
+
+            // 🆕 NEW USER SIGNUP
+
+            // ========================
+
             await signUpUser({
+
                 uid: user.uid,
+
                 name: user.displayName || "",
+
                 email: user.email || "",
+
             });
+
+            toast.success("Signing you up...");
 
             await setSessionCookie(idToken);
 
-            toast.success("New account created succesfully");
-
-            router.push(`/profile/${user.uid}/trade`);
+            router.push(`/profile/${user.uid}/trade?welcome=true`);
 
             return user;
 
         } catch (error: unknown) {
+
             if (loginRef.current !== currentRequest) return;
 
             if (timeoutId) clearTimeout(timeoutId);
@@ -139,12 +197,19 @@ export const useSocialLogin = () => {
             toast.error(getAuthErrorMessage(error, providerName));
 
         } finally {
+
             if (loginRef.current === currentRequest) {
+
                 if (timeoutId) clearTimeout(timeoutId);
-                setSocialLoading(false); // ✅ ALWAYS reset loading
+
+                setSocialLoading(false);
+
             }
+
         }
+
     };
 
     return { handleSocialLogin, socialloading };
+
 };

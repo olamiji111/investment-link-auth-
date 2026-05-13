@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/shared/header';
 import { PopularOptions } from "@/constants";
 import Image from "next/image";
@@ -7,12 +7,56 @@ import { ChevronRight } from 'lucide-react';
 import TradingViewChart from "@/components/shared/tradingview";
 import Link from "next/link";
 import Alert from '@/components/shared/alert';
+import { useSearchParams } from 'next/navigation';
+import { Checkbox } from '@/components/ui/checkbox';
 
 type titleType = (typeof PopularOptions)[number]["symbol"];
 
 const Trade = () => {
     const [TradeOption, setTradeOption] = useState<titleType>("TVC:GOLD");
     const [isAlertOpen, setAlertOpen] = useState<boolean>(false);
+    const searchParams = useSearchParams();
+
+    const [newUserAlert, setNewUserAlert] = useState(
+        searchParams.get("welcome") === "true"
+    );
+
+    const WelcomeAlertContent = (
+        <div className="flex flex-col gap-6 justify-between h-full">
+            <div className="flex flex-col gap-2">
+
+                <p className="text-zinc-600 font-normal text-xs">
+                    Congratulations on signing up. You are one step ahead of stacking up wealth daily with our automated trading system.
+                </p>
+            </div>
+
+            <div className="flex flex-row gap-x-2 items-center mt-4">
+                <Checkbox
+                    defaultChecked
+                    id="notify-profile"
+                    className="cursor-pointer data-unchecked:bg-gray-200 data-checked:bg-link-hover data-checked:border-transparent"
+                />
+                <label
+                    htmlFor="notify-profile"
+                    className="text-black text-sm font-medium cursor-pointer"
+                >
+                    Receive email notifications for trade alerts, payment updates, and balance changes related to your account activity
+                </label>
+            </div>
+
+
+            <div className="flex flex-row gap-x-2 items-center w-full mt-3">
+                <div className="ml-auto flex gap-x-3">
+                    <button
+                        onClick={() => setNewUserAlert(false)}
+                        className="text-link-color cursor-pointer font-normal rounded-full border border-[#8593bf] flex items-center justify-center px-4 py-1"
+                    >
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 
     const AlertContent = (
         <div className="flex flex-col gap-6  justify-between h-full">
@@ -147,6 +191,12 @@ const Trade = () => {
                 <TradingViewChart symbol={TradeOption} />
             </div>
             <Alert open={isAlertOpen} setOpen={setAlertOpen} contentChildren={AlertContent} header="Info" />
+            <Alert
+                open={newUserAlert}
+                setOpen={setNewUserAlert}
+                contentChildren={WelcomeAlertContent}
+                header=" 🎉 Welcome to AutoTrader"
+            />
         </main>
     );
 };

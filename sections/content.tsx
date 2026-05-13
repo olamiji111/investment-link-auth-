@@ -137,7 +137,7 @@ const Content = () => {
                     toast.success("Email verified and signed Up process is complete.");
                     setLoading(false);
 
-                    router.push(`/profile/${uid}/trade`);
+                    router.push(`/profile/${uid}/trade?welcome=true`);
                 }
             }, 3000);
 

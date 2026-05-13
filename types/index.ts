@@ -13,7 +13,7 @@ export interface SignUpParams {
     uid: string;
     name: string;
     email: string;
-    password: string;
+    password?: string;
 };
 
 export type SignInParams = {
@@ -33,6 +33,4 @@ export interface AppUser {
     "M.Margin": number;
     "I.Margin": number;
     profit: number;
-
-
 }

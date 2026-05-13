@@ -7,8 +7,9 @@ import { ChevronRight } from 'lucide-react';
 import TradingViewChart from "@/components/shared/tradingview";
 import Link from "next/link";
 import Alert from '@/components/shared/alert';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox';
+
 
 type titleType = (typeof PopularOptions)[number]["symbol"];
 
@@ -16,10 +17,28 @@ const Trade = () => {
     const [TradeOption, setTradeOption] = useState<titleType>("TVC:GOLD");
     const [isAlertOpen, setAlertOpen] = useState<boolean>(false);
     const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const router = useRouter();
+    const [newUserAlert, setNewUserAlert] = useState<boolean>(false);
 
-    const [newUserAlert, setNewUserAlert] = useState(
-        searchParams.get("welcome") === "true"
+    useEffect(() => {
+        const isWelcome = searchParams.get("welcome") === "true";
+
+        if (!isWelcome) return;
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setNewUserAlert(true);
+
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("welcome");
+
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+
+    },
+        [searchParams, pathname, router]
     );
+
+
 
     const WelcomeAlertContent = (
         <div className="flex flex-col gap-6 justify-between h-full">

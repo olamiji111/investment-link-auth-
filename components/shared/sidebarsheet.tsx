@@ -33,22 +33,14 @@ interface SheetProps {
     children: React.ReactNode;
 }
 
-const defaulTAccountBalance: AccountBalance = {
-    Available: 0.0,
-    Equity: 0.0,
-    "M.Margin": 0.0,
-    profit: 0.0,
-    "I.Margin": 0.0,
-}
+
 
 const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
     const [isAccountCollapsed, setIsAccountCollapsed] = useState(false);
     const [isToolCollapsed, setIsToolCollapsed] = useState(false);
     const [isHelpCollapsed, setIsHelpCollapsed] = useState(false);
     const [isSettingsCollapsed, setIsSettingsCollapsed] = useState(false);
-    const currentBalance = useBalanceStore((state) =>
-        state.balances[state.currentUserId] ?? defaulTAccountBalance
-    );
+
 
     const router = useRouter();
     const pathname = usePathname();
@@ -59,6 +51,15 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
     const user = useUserStore((state) => state.user);
     const loading = useUserStore((state) => state.loading);
 
+    const balanceItems = user
+        ? [
+            ["Available", user.Available],
+            ["Equity", user.Equity],
+            ["M.Margin", user["M.Margin"]],
+            ["profit", user.profit],
+            ["I.Margin", user["I.Margin"]],
+        ]
+        : [];
 
     const handleNavClick = (href: string) => {
         if (pathname === href) {
@@ -70,7 +71,6 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
         setOpen(false);
     }
 
-    const balanceItems = Object.entries(currentBalance);
 
     // 🔹 Reusable Trigger UI
     const createTrigger = (icon: string, label: string) => (
@@ -211,7 +211,7 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
 
                                 <div className="w-full mt-1 h-[1px] bg-[repeating-linear-gradient(to_right,_#d4d4d4_0,_#d4d4d4_4px,_transparent_4px,_transparent_8px)]" />
                                 <div className="flex flex-row gap-x-1 items-center">
-                                    <span className=" text-white text-[15px] font-medium tracking-wide"> £{value.toFixed(2)} </span>
+                                    <span className=" text-white text-[15px] font-medium tracking-wide"> £{Number(value).toFixed(2)} </span>
                                     <span className="icon-info icon-pds   text-xl" />
                                 </div>
 

@@ -165,3 +165,26 @@ export async function getCurrentUser(): Promise<AppUser | null> {
         return null;
     }
 }
+
+
+export async function isAuthenticated() {
+    try {
+        const user = await getCurrentUser();
+
+        if (!user?.id) {
+            return false;
+        }
+
+        // 🔍 ensure Firestore profile still exists
+        const userDoc = await db.collection("users").doc(user.id).get();
+
+        if (!userDoc.exists) {
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error("isAuthenticated error:", error);
+        return false;
+    }
+}

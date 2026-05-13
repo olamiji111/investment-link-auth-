@@ -17,9 +17,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Plus500BOT-signIN",
-  description: "Plus500BOT - secure, efficient and intelligent trading platform offering stocks, ETFS, crypto wallets, real-time market data, and AI powered auto-trading for investors. Manage trades, track portfolios, and make informed financial decisions covertly with ease, trading tools for a seamless investment experience.",
-  icons: {},
+  title: "AutoTrader Dashboard",
+  description: "AutoTraderInc is an AI-powered automated trading platform using OrionAI to analyze global markets and financial instruments in real time. It executes smart trades across stocks, ETFs, and crypto, helping investors optimize portfolios, reduce risk, and capitalize on market opportunities with advanced algorithmic precision.",
+  icons: {
+    icon: "/favicon.ico",
+  },
   other: {
     'theme-color': '#0c2780',
   },

@@ -121,16 +121,14 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                     <div className="flex gap-x-3 items-center ">
                         <User />
                         <div>
-                            {loading ? (
-                                <span className="text-sm text-zinc-500">Loading...</span>
-                            ) : (
-                                <>
-                                    <span>{user?.name || ""}</span>
-                                    <span className="text-sm text-zinc-500 block">
-                                        {user?.email || ""}
-                                    </span>
-                                </>
-                            )}
+
+                            <>
+                                <span>{user?.name || ""}</span>
+                                <span className="text-sm text-zinc-500 block">
+                                    {user?.email || ""}
+                                </span>
+                            </>
+
                         </div>
                     </div>
 

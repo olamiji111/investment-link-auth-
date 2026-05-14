@@ -1,15 +1,19 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
 import Header from "@/components/shared/header";
-import { useBalanceStore } from '@/store';
 import Link from "next/link";
 import Alert from '@/components/shared/alert';
+import { useUserStore } from '@/store';
 
 const FundsManagement = () => {
     const scrollRef = useRef<HTMLDivElement | null>(null);
-    const currentBalance = useBalanceStore((state) =>
-        state.balances[state.currentUserId]
-    )
+
+    useEffect(() => {
+        useUserStore.getState().fetchUser();
+    }, []);
+    const user = useUserStore((state) => state.user);
+    const loading = useUserStore((state) => state.loading);
+
     useEffect(() => {
         const el = scrollRef.current;
         if (!el) return;
@@ -86,7 +90,7 @@ const FundsManagement = () => {
                         </div>
                         <div className='flex flex-row text-link-color items-end'>
                             <span className='text-5xl  font-medium'>
-                                £{currentBalance.Equity}
+                                £{user?.Equity}
                             </span>
                             <span className='text-md font-medium text-xl'>
                                 .00
@@ -108,17 +112,17 @@ const FundsManagement = () => {
                             <div className='flex text-zinc-800 font-medium gap-x-3  text-sm flex-row items-center justify-between w-full'>
                                 <span className='shrink-0 capitalize'> Maintenance margin </span>
                                 <div className="w-full  h-[1px] bg-[repeating-linear-gradient(to_right,_#9ca3af_0,_#9ca3af_4px,_transparent_4px,_transparent_8px)]" />
-                                <span> £{currentBalance['M.Margin'].toFixed(2)}</span>
+                                <span> £{user?.['M.Margin'].toFixed(2)}</span>
                             </div>
                             <div className='flex text-zinc-800 font-medium gap-x-3  text-sm flex-row items-center justify-between w-full'>
                                 <span className='shrink-0 capitalize'> Initial margin </span>
                                 <div className="w-full  h-[1px] bg-[repeating-linear-gradient(to_right,_#9ca3af_0,_#9ca3af_4px,_transparent_4px,_transparent_8px)]" />
-                                <span> £{currentBalance['M.Margin'].toFixed(2)}</span>
+                                <span> £{user?.['I.Margin'].toFixed(2)}</span>
                             </div>
                             <div className='flex text-zinc-800 font-medium gap-x-3  text-sm flex-row items-center justify-between w-full'>
                                 <span className='shrink-0 capitalize'> Available to Withdraw </span>
                                 <div className="w-full  h-[1px] bg-[repeating-linear-gradient(to_right,_#9ca3af_0,_#9ca3af_4px,_transparent_4px,_transparent_8px)]" />
-                                <span> £{currentBalance['M.Margin'].toFixed(2)}</span>
+                                <span> £{user?.Available.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>

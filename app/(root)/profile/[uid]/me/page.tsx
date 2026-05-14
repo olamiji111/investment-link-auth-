@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import Header from '@/components/shared/header';
 import Image from "next/image";
 import Link from "next/link";
 import { RiskManagement } from '@/components/icons/icons';
+import { useUserStore } from '@/store';
 
 interface UsageAnalysisProps {
     title: string;
@@ -167,7 +168,12 @@ const MostTraded = () => {
 const Profile = () => {
     const AverageGradeValue = Object.entries(AverageGrade);
     const [first, ...rest] = PositionHistory;
-    const updatedRest = [...rest, "Last 0 days"];
+
+    useEffect(() => {
+        useUserStore.getState().fetchUser();
+    }, []);
+    const user = useUserStore((state) => state.user);
+
     return (
         <div className='h-dvh flex col overflow-y-auto relative '>
             <Header headerTitle="" />
@@ -188,7 +194,7 @@ const Profile = () => {
                         <span className='icon icon-me text-4xl text-white' />
                         <div className='flex flex-col text-white '>
                             <span className='font-medium text-[15px]'> Hi there,</span>
-                            <span className='text-3xl font-extrabold'> Ola </span>
+                            <span className='text-3xl font-extrabold'> {user?.name} </span>
                         </div>
                     </div>
                     <div className='flex flex-col gap-8 items-start mt-4'>

@@ -18,14 +18,11 @@ import {
     OtherNavLinks,
 } from "@/constants";
 import Link from "next/link";
+import Image from "next/image";
 import CollapsibleAction from "./collapsible";
 import { ChevronDown } from "lucide-react";
-import type { AccountBalance } from "@/types";
-import { useBalanceStore } from "@/store";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import { getCurrentUser } from "@/lib/actions/auth.action";
-import { AppUser } from "@/types";
 import { useUserStore } from "@/store";
 interface SheetProps {
     open: boolean;
@@ -49,7 +46,12 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
         useUserStore.getState().fetchUser();
     }, []);
     const user = useUserStore((state) => state.user);
-    const loading = useUserStore((state) => state.loading);
+    const links = navLinks(user?.id ?? "default");
+    const accountLinks = AccountCollapsibeLinks(user?.id ?? "default");
+    const toolLinks = ToolCollapsibeLinks(user?.id ?? "default");
+    const helpLinks = HelpCollapsibeLinks(user?.id ?? "default");
+    const settingsLinks = SettingsCollapsibeLinks(user?.id ?? "default");
+    const OtherLinks = OtherNavLinks(user?.id ?? "default");
 
     const balanceItems = user
         ? [
@@ -134,15 +136,26 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
 
                     {/* NAV LINKS */}
                     <div className="pt-5 sm:pt-12 flex flex-col gap-3">
-                        {navLinks.map((item, idx) => (
+                        {links.map((item, idx) => (
                             <div
                                 onClick={() => handleNavClick(item.href)}
                                 key={idx}
                                 className="font-medium text-[16px] flex items-center gap-x-2 py-2 hover:bg-[#2e86fe] active:bg-[#2e86fe] text-link-color hover:text-white rounded-md w-full transition-all"
                             >
-                                <span
-                                    className={`icon-pds icon-${item.icon} text-xl px-2`}
-                                />
+                                {!item.isImage ? (
+                                    <span
+                                        className={`icon-pds icon-${item.icon} text-xl px-2`}
+                                    />
+                                ) : (
+                                    <Image
+                                        alt="Orion AI Bot"
+                                        src={item.icon}
+                                        width={24}
+                                        height={24}
+                                        className="object-contain rounded-full size-6"
+                                    />
+                                )}
+
                                 <span>{item.label}</span>
                             </div>
                         ))}
@@ -154,33 +167,33 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                             open={isAccountCollapsed}
                             setOpen={setIsAccountCollapsed}
                             buttonChildren={createTrigger("account", "Account")}
-                            contentChildren={createContent(AccountCollapsibeLinks)}
+                            contentChildren={createContent(accountLinks)}
                         />
 
                         <CollapsibleAction
                             open={isToolCollapsed}
                             setOpen={setIsToolCollapsed}
                             buttonChildren={createTrigger("tools", "Tools")}
-                            contentChildren={createContent(ToolCollapsibeLinks)}
+                            contentChildren={createContent(toolLinks)}
                         />
 
                         <CollapsibleAction
                             open={isHelpCollapsed}
                             setOpen={setIsHelpCollapsed}
                             buttonChildren={createTrigger("help", "Help")}
-                            contentChildren={createContent(HelpCollapsibeLinks)}
+                            contentChildren={createContent(helpLinks)}
                         />
 
                         <CollapsibleAction
                             open={isSettingsCollapsed}
                             setOpen={setIsSettingsCollapsed}
                             buttonChildren={createTrigger("settings", "Settings")}
-                            contentChildren={createContent(SettingsCollapsibeLinks)}
+                            contentChildren={createContent(settingsLinks)}
                         />
 
                         {/* OTHER LINKS */}
                         <div className="py-2 flex flex-col gap-3">
-                            {OtherNavLinks.map((item, idx) => (
+                            {OtherLinks.map((item, idx) => (
                                 <Link
                                     href={item.href}
                                     key={idx}

@@ -29,7 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         check();
 
 
-        const interval = setInterval(check, 10000);
+        const interval = setInterval(check, 60000);
 
         return () => {
             isActive = false;

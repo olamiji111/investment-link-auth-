@@ -216,182 +216,161 @@ interface navLinksProps {
     label: string;
     href: string;
     icon: string;
+    isImage?: boolean;
 };
 
-export const navLinks: navLinksProps[] = [
+export const navLinks = (uid: string): navLinksProps[] => [
     {
         label: "Trade",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/trade`,
         icon: "trade",
     },
     {
         label: "Open Positions",
-        href: "/profile/default/open-positions",
+        href: `/profile/${uid}/open-positions`,
         icon: "open",
     },
     {
         label: "Orders",
-        href: "/profile/default/orders",
+        href: `/profile/${uid}/orders`,
         icon: "orders",
     },
     {
         label: "Closed Positions",
-        href: "/profile/default/closed-positions",
+        href: `/profile/${uid}/closed-positions`,
         icon: "closed",
     },
     {
         label: "Funds",
-        href: "/profile/default/funds",
+        href: `/profile/${uid}/funds`,
         icon: "funds",
     },
     {
         label: "Orion AI Bot",
-        href: "/profile/default/bot",
-        icon: "bot",
-    }
-]
+        href: `/profile/${uid}/bot`,
+        icon: "/asset/images/orion.png",
+        isImage: true,
+    },
+];
 
-export const AccountCollapsibeLinks: navLinksProps[] = [
+export const AccountCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) => [
     {
         label: "+Me",
-        href: "/profile/default/me",
+        href: `/profile/${uid}/me`,
         icon: "me"
     },
     {
         label: "Verify Account",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/verify`,
         icon: "verify"
     },
     {
         label: "Invite a Friend",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/invite`,
         icon: "invite"
     },
 ];
 
-export const ToolCollapsibeLinks: navLinksProps[] = [
+export const ToolCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) => [
     {
         label: "Account Snapshot",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/trade`,
         icon: "snapshot"
     },
     {
         label: "Manage WatchList",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/trade`,
         icon: "watchlist"
     },
     {
         label: "Economy Calendar",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/trade`,
         icon: "calendar"
     },
     {
         label: "Market News",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/trade`,
         icon: "news"
     },
     {
         label: "Alerts",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/alerts`,
         icon: "alerts"
     },
     {
         label: "Reports",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/reports`,
         icon: "reports"
     },
 ];
 
-export const SettingsCollapsibeLinks: navLinksProps[] = [
+export const SettingsCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) => [
     {
         label: "Privacy Settings",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/privacy`,
         icon: "privacy"
     },
     {
         label: "Security Settings",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/security`,
         icon: "security"
     },
     {
         label: "Notification Settings",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/notifications`,
         icon: "notifications"
     },
     {
         label: "Display Settings",
-        href: "/profile/default/contact",
+        href: `/profile/${uid}/display`,
         icon: "display"
     },
 
 ];
 
-export const OtherNavLinks: navLinksProps[] = [
+export const OtherNavLinks: (uid: string) => navLinksProps[] = (uid) => [
     {
         label: "Professional Accounts",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/professional`,
         icon: "professional"
     },
     {
         label: "+Insights",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/trade`,
         icon: "insights"
     },
     {
         label: "Log Out",
-        href: "/",
+        href: `/profile/${uid}/logout`,
         icon: "logout"
     },
 
 ];
 
 
-export const HelpCollapsibeLinks: navLinksProps[] = [
+export const HelpCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) => [
     {
         label: "AI Academy",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/trade`,
         icon: "academy"
     },
     {
         label: "Platform Tour",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/trade`,
         icon: "tour"
     },
     {
         label: "Terms and Agreements",
-        href: "/profile/default/trade",
+        href: `/profile/${uid}/terms`,
         icon: "agreement"
     },
     {
         label: "Contact Us",
-        href: "/profile/default/contact",
+        href: `/profile/${uid}/contact`,
         icon: "contact"
     },
 
 ];
-
-
-
-type UserBalances = {
-    [userId: string]: AccountBalance;
-}
-
-export const Balances: UserBalances = {
-    "user-1": {
-        Available: 0,
-        Equity: 0,
-        "M.Margin": 0,
-        profit: 0,
-        "I.Margin": 0,
-    },
-    "user-2": {
-        Available: 0,
-        Equity: 0,
-        "M.Margin": 0,
-        profit: 0,
-        "I.Margin": 0,
-    }
-};
 
 interface BankProps {
     name: DepositMethod;

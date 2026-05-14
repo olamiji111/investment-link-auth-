@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AutoTrader Dashboard",
+  title: "AutoTrader - Dashboard",
   description: "AutoTraderInc is an AI-powered automated trading platform using OrionAI to analyze global markets and financial instruments in real time. It executes smart trades across stocks, ETFs, and crypto, helping investors optimize portfolios, reduce risk, and capitalize on market opportunities with advanced algorithmic precision.",
   icons: {
     icon: "/favicon.ico",

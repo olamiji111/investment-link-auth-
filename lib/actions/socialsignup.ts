@@ -29,7 +29,7 @@ const getAuthErrorMessage = (error: unknown, provider: string) => {
 
     switch (code) {
         case "auth/popup-closed-by-user":
-            return "Signing Up  Cancelled";
+            return "Signing Up process Cancelled";
 
         case "auth/cancelled-popup-request":
             return "Signup process cancelled";

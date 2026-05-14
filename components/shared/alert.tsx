@@ -15,7 +15,8 @@ const Alert = ({ open, setOpen, contentChildren, header }: AlertProps) => {
             <AlertDialogTrigger asChild />
             <AlertDialogDescription> {null} </AlertDialogDescription>
             <AlertDialogContent
-                className='outline-none border-none  flex-1 rounded-2xl w-[60%]    max-w-full flex flex-col '
+                size="default"
+                className='outline-none border-none  flex-1 rounded-2xl w-full max-w-full flex flex-col '
             >
                 <AlertDialogTitle>
                     <span className='font-medium text-zinc-800 text-[17px]'> {header} </span>

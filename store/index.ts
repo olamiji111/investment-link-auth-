@@ -72,6 +72,7 @@ export const useUserStore = create<UserState>((set) => ({
 
         });
 
+
     },
 
     fetchUser: async () => {

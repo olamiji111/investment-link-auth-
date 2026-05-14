@@ -24,6 +24,12 @@ import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/store";
+import { auth } from "@/firebase/client";
+import { signOut } from "firebase/auth";
+import { toast } from "sonner";
+
+
+
 interface SheetProps {
     open: boolean;
     setOpen: (b: boolean) => void;
@@ -46,6 +52,7 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
         useUserStore.getState().fetchUser();
     }, []);
     const user = useUserStore((state) => state.user);
+    const loading = useUserStore((state) => state.loading);
     const links = navLinks(user?.id ?? "default");
     const accountLinks = AccountCollapsibeLinks(user?.id ?? "default");
     const toolLinks = ToolCollapsibeLinks(user?.id ?? "default");
@@ -71,7 +78,37 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
         }
 
         setOpen(false);
-    }
+    };
+
+    const handleLogOut = async () => {
+        try {
+            toast.loading("Logging out...", {
+                id: "logout",
+            });
+
+            // small delay for UX
+            await new Promise((resolve) => setTimeout(resolve, 2500));
+
+            await signOut(auth);
+
+            useUserStore.getState().clearUser();
+
+            toast.success("Logged out successfully", {
+                id: "logout",
+            });
+
+            router.replace("/");
+
+            setOpen(false);
+
+        } catch (error) {
+            console.log("Logout error:", error);
+
+            toast.error("Failed to logout", {
+                id: "logout",
+            });
+        }
+    };
 
 
     // 🔹 Reusable Trigger UI
@@ -206,11 +243,18 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
 
                         </div>
 
+                        <button
+                            onClick={handleLogOut}
+                            className="font-medium text-[16px] flex items-center gap-x-2 py-2 hover:bg-[#2e86fe] text-link-color hover:text-white rounded-md w-full transition-all"
+                        >
+                            <span className="icon icon-logout text-xl px-2" />
+                            <span>Log Out</span>
+                        </button>
                     </div>
                 </div>
 
                 <div className="w-full sm:overflow-hidden  sm:sticky  right-0 left-0  shrink-0   bg-[#2c3a4d]  bottom-0 rounded-rb-full flex flex-col items-center justify-center p-4 pb-2">
-                    <div onClick={() => handleNavClick("/profile/default/deposit")} className="bg-medium-blue cursor-pointer hover:opacity-90 duration-300 py-2 px-6  flex  flex-row gap-x-4  items-center justify-center rounded-full border border-transparent w-full text-white ">
+                    <div onClick={() => handleNavClick(`/profile/${user?.id}/deposit`)} className="bg-medium-blue cursor-pointer hover:opacity-90 duration-300 py-2 px-6  flex  flex-row gap-x-4  items-center justify-center rounded-full border border-transparent w-full text-white ">
                         <span className="icon icon-add-funds text-[1.5rem] md:text-3xl" />
                         <span className='text-md sm:text-lg lg:text-xl font-semibold'> Add Funds</span>
                     </div>

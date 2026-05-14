@@ -339,11 +339,7 @@ export const OtherNavLinks: (uid: string) => navLinksProps[] = (uid) => [
         href: `/profile/${uid}/trade`,
         icon: "insights"
     },
-    {
-        label: "Log Out",
-        href: `/profile/${uid}/logout`,
-        icon: "logout"
-    },
+
 
 ];
 

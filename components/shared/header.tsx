@@ -4,12 +4,17 @@ import { Menu, ChevronDown, Wallet } from 'lucide-react';
 import { Search } from '@/components/icons/icons';
 import Link from "next/link";
 import Sidebarsheet from './sidebarsheet';
+import { useUserStore } from '@/store';
 
 const Header = ({ headerTitle }: { headerTitle: string }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-    const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [showDiv, setShowDiv] = useState<boolean>(true)
-    const addFundRef = useRef<HTMLDivElement | null>(null)
+
+
+    useEffect(() => {
+        useUserStore.getState().fetchUser();
+    }, []);
+    const user = useUserStore((state) => state.user);
 
     const handleNotClick = () => {
         alert("Notifications sent to your registered Email")
@@ -65,7 +70,7 @@ const Header = ({ headerTitle }: { headerTitle: string }) => {
                     </div>
                 </div>
                 {showDiv && isTrue && (
-                    <Link href="/profile/default/deposit" className='px-4  cursor-pointer text-sm text-white transition-all duration-300relative  py-3 bg-[linear-gradient(to_right,#11affd_0%,#2e86fe_100%)] flex items-center justify-between flex-row '>
+                    <Link href={`/profile/${user?.id}/deposit`} className='px-4  cursor-pointer text-sm text-white transition-all duration-300relative  py-3 bg-[linear-gradient(to_right,#11affd_0%,#2e86fe_100%)] flex items-center justify-between flex-row '>
                         <div />
                         <div className='flex fles-row gap-3 items-center '>
                             <span className="icon icon-add-funds text-[1.5rem] md:text-3xl" />

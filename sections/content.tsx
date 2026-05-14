@@ -12,7 +12,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { sendEmailVerification } from 'firebase/auth';
 import { toast } from "sonner";
 import { useSocialLogin } from "@/lib/actions/socialsignup";
-
+import Loader from '@/components/shared/loader';
 ; interface FormData {
     name: string;
     email: string;
@@ -197,24 +197,7 @@ const Content = () => {
         <>
             <div className='relative py-8 mt-2  px-4 sm:px-6'>
                 {(loading || socialloading) && (
-
-                    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-none">
-
-                        <div className="flex flex-row items-center gap-x-2">
-
-                            <Image
-                                alt="loading"
-                                src="/asset/images/loading.webp"
-                                width={20}
-                                height={20}
-                                className="w-16 h-16 object-contain"
-                            />
-
-                            <p className="text-link-color text-[17px] font-semibold">Processing...</p>
-
-                        </div>
-
-                    </div>
+                    <Loader loaderText='Processing...' />
 
                 )}
                 <form ref={formRef} onSubmit={formSubmitHandler} className='flex  flex-col gap-y-6 items-center px-4 '>

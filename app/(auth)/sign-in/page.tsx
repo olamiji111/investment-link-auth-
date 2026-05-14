@@ -14,7 +14,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "@/firebase/client";
 import { getLoginErrorMessage } from "@/utils/loginerrormessage"
 import { useSocialLogin } from "@/lib/actions/sociallogin";
-
+import Loader from '@/components/shared/loader';
 
 
 interface FormData {
@@ -301,24 +301,7 @@ const SignIn = () => {
             <Header />
             <div className='relative h-full py-12 px-4 sm:px-6 lg:px-8 '>
                 {(loading || socialloading) && (
-
-                    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-none">
-
-                        <div className="flex flex-row items-center gap-x-2">
-
-                            <Image
-                                alt="loading"
-                                src="/asset/images/loading.webp"
-                                width={20}
-                                height={20}
-                                className="w-16 h-16 object-contain"
-                            />
-
-                            <p className="text-link-color text-[17px] font-semibold">Loggin In...</p>
-
-                        </div>
-
-                    </div>
+                    <Loader loaderText='Logging in...' />
 
                 )}
                 <div className='px-1 py-8 flex flex-col items-center justify-center '>

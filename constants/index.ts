@@ -219,7 +219,7 @@ interface navLinksProps {
     isImage?: boolean;
 };
 
-export const navLinks = (uid: string): navLinksProps[] => [
+export const navLinks = (uid?: string): navLinksProps[] => [
     {
         label: "Trade",
         href: `/profile/${uid}/trade`,
@@ -246,8 +246,8 @@ export const navLinks = (uid: string): navLinksProps[] => [
         icon: "funds",
     },
     {
-        label: "Orion AI Bot",
-        href: `/profile/${uid}/bot`,
+        label: "Orion Robot",
+        href: `https://orion.autotraderai.online`,
         icon: "/asset/images/orion.png",
         isImage: true,
     },

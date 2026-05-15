@@ -5,7 +5,6 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger, } from "@/components/ui/
 import Header from "@/components/shared/header";
 import { ChevronLeft } from 'lucide-react';
 import Image from "next/image";
-import { Select, SelectContent, SelectItem, SelectGroup, SelectTrigger, SelectValue } from "@/components/ui/select"
 import CardDeposit from './carddeposit';
 import CryptocurrencyDeposit from './cryptocurrencydeposit';
 import Giftcarddeposit from './giftcarddeposit';

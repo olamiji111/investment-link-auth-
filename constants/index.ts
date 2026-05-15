@@ -274,7 +274,7 @@ export const AccountCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) =>
 export const ToolCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) => [
     {
         label: "Account Snapshot",
-        href: `/profile/${uid}/trade`,
+        href: `/profile/${uid}/snapshot`,
         icon: "snapshot"
     },
     {
@@ -292,11 +292,7 @@ export const ToolCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) => [
         href: `/profile/${uid}/trade`,
         icon: "news"
     },
-    {
-        label: "Alerts",
-        href: `/profile/${uid}/alerts`,
-        icon: "alerts"
-    },
+
     {
         label: "Reports",
         href: `/profile/${uid}/reports`,

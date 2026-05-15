@@ -7,7 +7,7 @@ const NotFound = () => {
         <div className='h-dvh relative'>
             <Header headerTitle='' />
 
-            <Loader loaderText='Loading...' />
+            <Loader loaderText='Please Wait...' />
 
 
         </div>

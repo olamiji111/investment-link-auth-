@@ -115,7 +115,7 @@ const Trade = () => {
             <Header headerTitle="Popular Options" />
 
             <div className=" h-full ">
-                <div className="flex flex-col w-full overflow-hidden pb-58 ">
+                <div className="flex pt-1 flex-col w-full overflow-hidden pb-58 ">
 
                     {PopularOptions.map((trade, idx) => (
                         <div

@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { DepositMethod } from '@/types';
 import AmountInput from './amountinput';
 import { ChevronLeft } from 'lucide-react';
 import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger, PopoverDescription, PopoverTitle } from '../ui/popover';
 import CryptoQRCode from './qrcode';
+import { useUserStore } from '@/store';
+import { toast } from "sonner";
 
 interface cryptoInfoProps {
     symbol: string;
@@ -61,6 +63,11 @@ const CryptocurrencyDeposit = () => {
     const [isPopOveropen, setOpenPopover] = useState<boolean>(false);
     const [selectedCoin, setSelectedCoin] = useState<CryptoType | null>(null)
 
+    useEffect(() => {
+        useUserStore.getState().fetchUser();
+    }, []);
+    const user = useUserStore((state) => state.user);
+
     const handlePopoverItem = (value: CryptoType) => {
         setSelectedCoin(value);
         setOpenPopover(false)
@@ -69,7 +76,7 @@ const CryptocurrencyDeposit = () => {
     const handleCopy = async (text: string) => {
         try {
             await navigator.clipboard.writeText(text);
-            alert("Copied");
+            toast.success("Address copied ");
         } catch (error) {
             console.error("Copy failed", error);
         }
@@ -78,7 +85,7 @@ const CryptocurrencyDeposit = () => {
         <div className='flex flex-col gap-y-3 px-3 w-full relative h-dvh'>
             <p className='text-[16px] font-bold text-zinc-400'>
                 {" Account Name: "}
-                <span className='text-zinc-500'> Olamiji odubote </span>
+                <span className='text-zinc-500'> {user?.name}  </span>
             </p>
             <div className='flex flex-col'>
                 <AmountInput />

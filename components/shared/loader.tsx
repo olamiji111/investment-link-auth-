@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const Loader = ({ loaderText }: { loaderText: string }) => {
     return (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-none">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-none">
 
             <div className="flex flex-row items-center gap-x-2">
 

@@ -1,6 +1,7 @@
-import React, { ChangeEvent, useRef, useState, SyntheticEvent } from 'react';
+import React, { ChangeEvent, useRef, useState, SyntheticEvent, useEffect } from 'react';
 import AmountInput from './amountinput';
 import Image from "next/image";
+import { useUserStore } from '@/store';
 
 const months = Array.from({ length: 12 }, (_, i) =>
     String(i + 1).padStart(2, "0")
@@ -8,6 +9,10 @@ const months = Array.from({ length: 12 }, (_, i) =>
 const years = Array.from({ length: 21 }, (_, i) => 2026 + i);
 
 const CardDeposit = () => {
+    useEffect(() => {
+        useUserStore.getState().fetchUser();
+    }, []);
+    const user = useUserStore((state) => state.user);
 
     const formRef = useRef<HTMLFormElement | null>(null);
     const [formValue, setFormValue] = useState({
@@ -18,6 +23,8 @@ const CardDeposit = () => {
             year: "2026"
         },
     })
+
+
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -75,7 +82,7 @@ const CardDeposit = () => {
         <div className='flex flex-col gap-y-5 px-3 w-full relative'>
             <p className='text-[16px] font-bold text-zinc-400'>
                 {" Card Holder's Name: "}
-                <span className='text-zinc-500'> Olamiji odubote </span>
+                <span className='text-zinc-500'> {user?.name}  </span>
             </p>
             <div className='flex flex-col'>
                 <AmountInput />
@@ -170,11 +177,12 @@ const CardDeposit = () => {
                 </form>
                 <div className='pb-28   flex flex-col gap-3 items-start text-[12px] text-zinc-500 font-normal'>
                     <p> Minimum of  £200.00 per deposit.</p>
-                    <p> I declare that: (a) this Payment Method (Card) is registered in the name of “Logged In User Name” and I am authorised to use it for payment (this may be verified); and (b) all funds deposited into my account are subject to risk of possible loss.
-                        The beneficiary name that will appear on your card statement is “TradeBot”.
+                    <p> I declare that: (a) this Payment Method (Card) is registered in the name of {user?.name} and I am authorised to use it for payment (this may be verified); and (b) all funds deposited into my account are subject to  verification and approval. </p>
+                    <p>
+                        The beneficiary name that will appear on your card statement is “AutoTraderInc”.
                     </p>
                     <p>
-                        TradeBot will never charge your card except for your actual deposit transactions.
+                        AutoTraderInc will never charge your card except for your actual deposit transactions.
                     </p>
                     <p>
                         We will always attempt to send withdrawals to your original source of remittance, whenever possible.

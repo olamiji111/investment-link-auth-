@@ -11,6 +11,7 @@ import CryptocurrencyDeposit from './cryptocurrencydeposit';
 import Giftcarddeposit from './giftcarddeposit';
 import Banktransfer from './banktransfer';
 import Paypal from './paypal';
+import Link from "next/link";
 
 interface DepositsheetProps {
     open: boolean;
@@ -85,9 +86,9 @@ const Depositsheet = ({ open, setOpen, selectedBank }: DepositsheetProps) => {
                             <span className='text-zinc-900 font-bold text-[15px]'> Deposit via {selectedBank ?? ""}</span>
                             <span className='icon icon-info-2 text-link-color text-sm font-bold' />
                         </div>
-                        <button className="flex items-center justify-center p-2.5 rounded-full bg-[#e7e9f2] transtion-transform text-link-color ease-in-out duration-300 cursor-pointer">
+                        <Link href="https://tawk.to/chat/6a069e0d9f3e811c3945a95f/1joktiq2n" className="flex items-center justify-center p-2.5 rounded-full bg-[#e7e9f2] transtion-transform text-link-color ease-in-out duration-300 cursor-pointer">
                             <span className='icon icon-livechat text-lg' />
-                        </button>
+                        </Link>
                     </div>
                     <div className='flex items-center justify-center mt-4 h-full '>
                         <Image

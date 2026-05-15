@@ -1,9 +1,15 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import AmountInput from './amountinput';
 import Image from "next/image";
+import { useUserStore } from '@/store';
 
 function Giftcarddeposit() {
-    const [giftCardValue, setGiftCardVlue] = useState("")
+    const [giftCardValue, setGiftCardVlue] = useState("");
+
+    useEffect(() => {
+        useUserStore.getState().fetchUser();
+    }, []);
+    const user = useUserStore((state) => state.user);
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -18,7 +24,7 @@ function Giftcarddeposit() {
         <div className='flex flex-col gap-y-3 px-3 w-full relative'>
             <p className='text-[16px] font-bold text-zinc-400'>
                 {" Account Name: "}
-                <span className='text-zinc-500'> Olamiji odubote </span>
+                <span className='text-zinc-500'> {user?.name}  </span>
             </p>
             <div className='flex flex-col'>
                 <AmountInput />
@@ -76,4 +82,4 @@ function Giftcarddeposit() {
     )
 }
 
-export default Giftcarddeposit
+export default Giftcarddeposit;

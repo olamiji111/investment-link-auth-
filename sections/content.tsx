@@ -302,10 +302,10 @@ const Content = () => {
                     <Link href="/sign-in" className='cursor-pointer transition-colors duration-300 select-none text-[15px] font-[500] text-link-color hover:text-link-hover active:text-link-hover px-2'>
                         Already have an account?
                     </Link>
-                    <button ref={chatRef} onClick={handleLiveChatClick} className='flex shrink-0  flex-row gap-x-1  items-center space-x-1 cursor-pointer transition-colors duration-300 select-none text-[14px]  border border-transparent text-link-color hover:text-white rounded-full px-3 py-2.5   ease-in-out bg-[#f3f4f9] hover:bg-[#2e86fe] font-semibold'>
+                    <Link href="https://tawk.to/chat/6a069e0d9f3e811c3945a95f/1joktiq2n" className='flex shrink-0  flex-row gap-x-1  items-center space-x-1 cursor-pointer transition-colors duration-300 select-none text-[14px]  border border-transparent text-link-color hover:text-white rounded-full px-3 py-2.5   ease-in-out bg-[#f3f4f9] hover:bg-[#2e86fe] font-semibold'>
                         <span className='icon icon-livechat text-lg' />
                         <span> Live Support </span>
-                    </button>
+                    </Link>
                 </div>
             </div>
             <div className='flex flex-col gap-5 items-center justify-center'>

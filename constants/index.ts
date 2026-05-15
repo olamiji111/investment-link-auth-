@@ -344,7 +344,7 @@ export const OtherNavLinks: (uid: string) => navLinksProps[] = (uid) => [
 ];
 
 
-export const HelpCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) => [
+export const HelpCollapsibeLinks: (uid?: string) => navLinksProps[] = (uid) => [
     {
         label: "AI Academy",
         href: `/profile/${uid}/trade`,
@@ -362,7 +362,7 @@ export const HelpCollapsibeLinks: (uid: string) => navLinksProps[] = (uid) => [
     },
     {
         label: "Contact Us",
-        href: `/profile/${uid}/contact`,
+        href: "https://tawk.to/chat/6a069e0d9f3e811c3945a95f/1joktiq2n",
         icon: "contact"
     },
 

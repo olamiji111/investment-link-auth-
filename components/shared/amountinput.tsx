@@ -1,7 +1,6 @@
 "use client";
-
 import React, { ChangeEvent, useRef, useState } from 'react';
-import type { DepositMethod } from '@/types';
+
 
 const AmountInput = () => {
     const [amount, setAmount] = useState("200");

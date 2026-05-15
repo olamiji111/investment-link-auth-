@@ -1,14 +1,22 @@
-import React from 'react';
+"use client";
+import React, { useEffect } from 'react';
 import AmountInput from './amountinput';
 import { Checkbox } from '../ui/checkbox';
 import Image from "next/image";
+import { useUserStore } from '@/store';
 
 const Paypal = () => {
+
+    useEffect(() => {
+        useUserStore.getState().fetchUser();
+    }, []);
+    const user = useUserStore((state) => state.user);
+
     return (
         <div className='flex flex-col gap-y-4 px-3 w-full relative'>
             <p className='text-[16px] font-bold text-zinc-400'>
                 {" Account Name: "}
-                <span className='text-zinc-500'> Olamiji odubote </span>
+                <span className='text-zinc-500'> {user?.name}  </span>
             </p>
 
             <div className='flex flex-col'>
@@ -40,7 +48,7 @@ const Paypal = () => {
                     Until the verification of your account is completed, the requested deposit amount will remain with your PayPal as reserved funds and will not be credited to your trading account, or available for use.
                 </p>
                 <p>
-                    I declare that: (a) this Payment Method (PayPal) is registered in the name of Olamiji Odubote and I am authorised to use it for payment (this may be verified); and (b) all funds deposited into my account are subject to risk of possible loss.
+                    I declare that: (a) this Payment Method (PayPal) is registered in the name of {user?.name} and I am authorised to use it for payment (this may be verified).
                 </p>
             </div>
             <div className='fixed bottom-0 z-50 left-0 pt-4 bg-white   pb-4 shadow-none w-full flex flex-col items-center justify-center gap-1'>

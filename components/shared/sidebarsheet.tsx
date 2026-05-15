@@ -189,7 +189,7 @@ const Sidebarsheet = ({ open, setOpen, children }: SheetProps) => {
                                         src={item.icon}
                                         width={24}
                                         height={24}
-                                        className="object-contain rounded-full size-6"
+                                        className="object-contain rounded-full size-5 "
                                     />
                                 )}
 

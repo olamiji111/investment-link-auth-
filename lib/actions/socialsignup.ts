@@ -112,7 +112,7 @@ export const useSocialLogin = () => {
 
                 }
 
-            }, 20000);
+            }, 35000);
 
             const result = await signInWithPopup(auth, provider);
 

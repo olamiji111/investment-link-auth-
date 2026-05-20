@@ -75,7 +75,7 @@ const FundsManagement = () => {
             <Header headerTitle="Fund Management" />
             <div className='px-4 sm:px-6'>
                 <div className='fixed z-50 right-3 top-8 translate-y-8'>
-                    <Link href="https://tawk.to/chat/6a069e0d9f3e811c3945a95f/1joktiq2n" className='border-none text-[15px]  font-semibold text-link-color flex flex-row gap-x-1 items-center cursor-pointer ease-in-out transition-all duration-300 '>
+                    <Link href="https://autotraderai.online/support" className='border-none text-[15px]  font-semibold text-link-color flex flex-row gap-x-1 items-center cursor-pointer ease-in-out transition-all duration-300 '>
                         <span>
                             Support
                         </span>

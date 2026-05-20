@@ -303,7 +303,7 @@ const SignIn = () => {
                             <ForgotPasswordState loginState={loginState} setLoginState={setLoginState} />
                         }
                         <div className='mt-5'>
-                            <Link href="https://tawk.to/chat/6a069e0d9f3e811c3945a95f/1joktiq2n" className=' flex items-center justify-center shrink-0  flex-row gap-x-1 space-x-1 cursor-pointer transition-colors duration-300 select-none text-[14px] font-normal border border-transparent text-link-color hover:text-white   ease-in-out bg-[#f3f4f9] hover:bg-[#2e86fe] font-semibold w-full h-10'>
+                            <Link href="https://autotraderai.online/support" className=' flex items-center justify-center shrink-0  flex-row gap-x-1 space-x-1 cursor-pointer transition-colors duration-300 select-none text-[14px] font-normal border border-transparent text-link-color hover:text-white   ease-in-out bg-[#f3f4f9] hover:bg-[#2e86fe] font-semibold w-full h-10'>
                                 <span className='icon icon-livechat text-lg' />
                                 <span> Live Support </span>
                             </Link>
